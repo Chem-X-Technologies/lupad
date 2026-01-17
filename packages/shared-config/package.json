@@ -1,0 +1,8 @@
+{
+  "name": "@lupad/shared-config",
+  "version": "0.1.0",
+  "files": [
+    "eslint.js",
+    "tsconfig.base.json"
+  ]
+}

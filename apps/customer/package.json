@@ -1,0 +1,26 @@
+{
+  "name": "@lupad/customer",
+  "version": "0.1.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "expo start --dev-client",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "lint": "expo lint",
+    "clean": "rm -rf .expo node_modules"
+  },
+  "dependencies": {
+    "expo": "~54.0.31",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "@lupad/shared-types": "workspace:*",
+    "@lupad/shared-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "typescript": "~5.9.2"
+  },
+  "private": true
+}
