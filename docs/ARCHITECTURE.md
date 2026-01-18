@@ -1,7 +1,7 @@
 # Lupad - Technical Architecture
 
-**Last Updated:** January 17, 2026  
-**Status:** Planning Phase
+**Last Updated:** January 18, 2026  
+**Status:** In Development (Pre-Development Phase 98% Complete)
 
 ---
 
@@ -11,11 +11,11 @@ Lupad follows a **client-server architecture** with real-time capabilities:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Mobile Applications                       │
-│  ┌──────────────────────┐    ┌──────────────────────┐     │
-│  │   Customer App       │    │    Driver App        │     │
-│  │   (Expo/React Native)│    │  (Expo/React Native) │     │
-│  └──────────┬───────────┘    └──────────┬───────────┘     │
+│                    Mobile Applications                      │
+│  ┌──────────────────────┐    ┌──────────────────────┐       │
+│  │   Customer App       │    │    Driver App        │       │
+│  │   (Expo/React Native)│    │  (Expo/React Native) │       │
+│  └──────────┬───────────┘    └──────────┬───────────┘       │
 │             │                           │                   │
 └─────────────┼───────────────────────────┼───────────────────┘
               │                           │
@@ -76,19 +76,18 @@ lupad/
 **Core Entities:**
 
 1. **Users**
-
    - Stores both customers and drivers
    - `id`, `phone`, `email`, `name`, `user_type` (customer/driver)
+   - `password` (optional - only for drivers)
+   - `auth_method` (OTP/PASSWORD) - tracks authentication type
    - `created_at`, `updated_at`
 
 2. **Drivers** (extends Users)
-
    - Driver-specific information
    - `user_id` (FK), `vehicle_type`, `license_number`, `plate_number`
    - `is_verified`, `is_available`, `rating`, `total_rides`
 
 3. **Rides**
-
    - Core ride entity
    - `id`, `customer_id` (FK), `driver_id` (FK)
    - `pickup_lat`, `pickup_lng`, `pickup_address`
@@ -99,7 +98,6 @@ lupad/
    - `created_at`, `started_at`, `completed_at`
 
 4. **Ratings**
-
    - `id`, `ride_id` (FK)
    - `rater_id` (FK), `ratee_id` (FK)
    - `rating` (1-5), `comment`
@@ -113,13 +111,11 @@ lupad/
 ### Redis Data Structures
 
 1. **Active Driver Locations**
-
    - Key: `driver:location:{driver_id}`
    - Value: JSON with lat, lng, timestamp
    - TTL: 5 minutes (refreshed on updates)
 
 2. **Active Rides**
-
    - Key: `ride:active:{ride_id}`
    - Value: Ride state for quick access
    - TTL: 24 hours
@@ -133,27 +129,61 @@ lupad/
 
 ## 🔐 Authentication & Authorization
 
-### JWT-Based Authentication
+### Hybrid Authentication Strategy
+
+**Design Decision:** Different authentication methods for different user types
+
+#### Customers: Passwordless OTP Authentication
 
 **Flow:**
 
-1. User registers/logs in with phone number
-2. OTP sent via SMS for verification
-3. Upon verification, server issues JWT token
-4. Token includes: `user_id`, `user_type`, `exp`
-5. Client stores token securely and includes in API requests
+1. Customer enters phone number
+2. OTP sent via SMS
+3. Customer enters OTP
+4. Upon verification, server issues JWT token
+5. No password required - simpler UX
 
-**Token Structure:**
+**Rationale:**
+
+- Faster onboarding (no password to create/remember)
+- Better UX for occasional users
+- Modern approach (WhatsApp-style)
+- Reduced friction
+
+#### Drivers: Password-Based Authentication (+ Optional 2FA)
+
+**Flow:**
+
+1. Driver registers with phone, name, and password
+2. Phone verified via OTP
+3. Subsequent logins: phone + password
+4. Optional: OTP 2FA for extra security
+5. Password reset available via OTP
+
+**Rationale:**
+
+- More security for professional accounts
+- Drivers login frequently (OTP fatigue would be annoying)
+- Handling money and sensitive data requires stronger auth
+- Can add 2FA later without disrupting flow
+
+### JWT Token Structure
 
 ```json
 {
   "user_id": "uuid",
   "user_type": "customer" | "driver",
   "phone": "+639xxxxxxxxx",
+  "auth_method": "OTP" | "PASSWORD",
   "iat": 1234567890,
   "exp": 1234567890
 }
 ```
+
+**Token Types:**
+
+- **Access Token:** Short-lived (15 minutes), used for API requests
+- **Refresh Token:** Long-lived (7 days), used to get new access tokens
 
 ---
 
@@ -255,14 +285,65 @@ RATE_PER_KM = 15 PHP
 
 ## 🏗️ API Design
 
+### Technology Stack
+
+**Backend Framework:**
+
+- **Express.js** - Web framework for Node.js
+- **TypeScript** - Type-safe JavaScript
+- **Prisma 6** - ORM for database access (CommonJS compatible)
+- **Zod** - Schema validation for requests
+- **Socket.io** - Real-time WebSocket communication
+- **ioredis** - Redis client with helper utilities
+
+**Middleware:**
+
+- **Morgan** - HTTP request logging
+- **express-async-errors** - Automatic async error handling
+- Custom error handler for Zod/Prisma errors
+- Custom validation middleware using Zod schemas
+- JWT authentication middleware (in progress)
+
+**Project Structure:**
+
+```
+apps/backend/
+├── src/
+│   ├── index.ts              # Main entry point
+│   ├── lib/
+│   │   ├── prisma.ts         # Prisma client singleton
+│   │   └── redis.ts          # Redis client + helpers
+│   ├── middleware/
+│   │   ├── errorHandler.ts   # Global error handler
+│   │   ├── logger.ts         # HTTP logging
+│   │   ├── validate.ts       # Zod validation
+│   │   ├── notFound.ts       # 404 handler
+│   │   └── auth.ts           # JWT auth (in progress)
+│   ├── routes/
+│   │   ├── index.ts          # Route aggregator
+│   │   ├── auth.routes.ts    # Auth endpoints
+│   │   ├── users.routes.ts   # User endpoints
+│   │   ├── rides.routes.ts   # Ride endpoints
+│   │   └── drivers.routes.ts # Driver endpoints
+│   ├── controllers/          # Request handlers (in progress)
+│   ├── services/             # Business logic (in progress)
+│   ├── schemas/              # Zod validation schemas (in progress)
+│   └── utils/                # Helper functions (in progress)
+├── prisma/
+│   ├── schema.prisma         # Database schema
+│   └── migrations/           # Migration history
+└── .env                      # Environment variables
+```
+
 ### REST API Endpoints
 
 **Authentication:**
 
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - Send OTP
-- `POST /api/auth/verify` - Verify OTP and get token
+- `POST /api/auth/register` - User registration (phone + OTP for customers, phone + password + OTP for drivers)
+- `POST /api/auth/login` - Login (send OTP for customers, phone + password for drivers)
 - `POST /api/auth/logout` - Invalidate token
+- `GET /api/auth/me` - Get current user profile
+- `POST /api/auth/refresh` - Refresh access token using refresh token
 
 **Users:**
 
@@ -301,20 +382,17 @@ RATE_PER_KM = 15 PHP
 ### Phase 1 Security Measures
 
 1. **API Security:**
-
    - JWT authentication on all protected routes
    - Rate limiting on auth endpoints
    - Input validation and sanitization
    - HTTPS only (in production)
 
 2. **Database Security:**
-
    - Parameterized queries (via Prisma)
    - Principle of least privilege for DB user
    - Regular backups
 
 3. **Mobile App Security:**
-
    - Secure token storage (Expo SecureStore)
    - Certificate pinning (Phase 2)
    - No sensitive data in AsyncStorage

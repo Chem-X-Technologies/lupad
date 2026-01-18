@@ -12,18 +12,20 @@ datasource db {
 
 // User model - base for both customers and drivers
 model User {
-  id        String   @id @default(uuid())
-  phone     String   @unique
-  email     String?
-  name      String
-  userType  UserType
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id         String     @id @default(uuid())
+  phone      String     @unique
+  email      String?
+  name       String
+  userType   UserType
+  password   String?    // Optional - only for drivers
+  authMethod AuthMethod @default(OTP)
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
 
   // Relations
-  driver        Driver?
-  ridesAsCustomer Ride[] @relation("CustomerRides")
-  ridesAsDriver   Ride[] @relation("DriverRides")
+  driver          Driver?
+  ridesAsCustomer Ride[]   @relation("CustomerRides")
+  ridesAsDriver   Ride[]   @relation("DriverRides")
   ratingsGiven    Rating[] @relation("RatingsGiven")
   ratingsReceived Rating[] @relation("RatingsReceived")
 
@@ -132,4 +134,9 @@ enum RideStatus {
 enum PaymentMethod {
   CASH
   DIGITAL
+}
+
+enum AuthMethod {
+  OTP      // Passwordless authentication via SMS OTP
+  PASSWORD // Traditional password + optional OTP 2FA
 }

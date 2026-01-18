@@ -4,6 +4,81 @@ This document records important technical and architectural decisions made durin
 
 ---
 
+## 2026-01-18: Authentication Strategy
+
+### Decision: Hybrid Authentication - Passwordless for Customers, Password-Based for Drivers
+
+**Status:** ✅ Accepted  
+**Context:** Need to balance user experience with security for different user types  
+**Alternatives Considered:**
+
+- Password authentication for everyone (traditional approach)
+- Passwordless OTP for everyone (modern, but SMS costs add up)
+- Social login (Google, Facebook) - adds complexity
+
+**Decision:** Implement hybrid authentication:
+
+- **Customers:** Passwordless via phone OTP only
+- **Drivers:** Phone + password with optional OTP 2FA
+
+**Rationale:**
+
+**For Customers (Passwordless):**
+
+- Simpler onboarding: phone → OTP → nickname → done
+- No password to remember or forget
+- Faster login experience
+- Less friction for occasional users
+- Modern UX (like WhatsApp)
+
+**For Drivers (Password-based):**
+
+- More security (handling money, earnings, sensitive data)
+- Login frequently throughout day (OTP fatigue would be annoying)
+- Professional account requires stronger authentication
+- Can add 2FA later for extra security
+- Password reset available via OTP
+
+**Consequences:**
+
+- Schema: `password` field is optional, `authMethod` enum tracks auth type
+- Two different auth flows in mobile apps
+- SMS costs lower (only OTP for customers, optional for drivers)
+- Need clear UX differentiation between customer and driver flows
+- More flexible: can migrate drivers to passwordless later if needed
+
+---
+
+## 2026-01-18: API Validation Library
+
+### Decision: Use Zod over Joi for Request Validation
+
+**Status:** ✅ Accepted  
+**Context:** Need schema validation for API requests  
+**Alternatives Considered:**
+
+- Joi (traditional, widely used)
+- Yup (React-focused)
+- Class-validator (decorator-based)
+
+**Decision:** Use Zod  
+**Rationale:**
+
+- TypeScript-first (automatic type inference)
+- Better DX with IntelliSense
+- Smaller bundle size than Joi
+- Modern API design
+- Works seamlessly with Prisma types
+- Growing ecosystem and community
+
+**Consequences:**
+
+- Team needs to learn Zod syntax
+- Excellent TypeScript integration reduces bugs
+- Can extract types from schemas automatically
+
+---
+
 ## 2026-01-18: Prisma Version Selection
 
 ### Decision: Use Prisma 6 with CommonJS

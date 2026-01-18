@@ -30,7 +30,7 @@
 
 - [x] Set up Node.js + Express backend with TypeScript (running locally)
 - [x] Configure Prisma ORM with local PostgreSQL
-- [ ] Implement basic API structure (REST endpoints)
+- [x] Implement basic API structure (REST endpoints)
 - [x] Set up Socket.io server
 - [ ] Create authentication system (JWT)
 - [x] Set up local Redis for caching

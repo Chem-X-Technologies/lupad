@@ -3,8 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
+import 'express-async-errors';
 import { prisma } from './lib/prisma.js';
 import redis from './lib/redis.js';
+import { requestLogger } from './middleware/logger.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { notFoundHandler } from './middleware/notFound.js';
+import routes from './routes/index.js';
 
 // Load environment variables
 dotenv.config();
@@ -21,6 +26,7 @@ const io = new SocketIOServer(httpServer, {
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(requestLogger);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +43,15 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
+
+// API Routes
+app.use('/api', routes);
+
+// 404 Handler
+app.use(notFoundHandler);
+
+// Error Handler (must be last)
+app.use(errorHandler);
 
 // Socket.IO connection handling
 io.on('connection', socket => {
