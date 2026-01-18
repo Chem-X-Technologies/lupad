@@ -4,6 +4,39 @@ This document records important technical and architectural decisions made durin
 
 ---
 
+## 2026-01-18: Prisma Version Selection
+
+### Decision: Use Prisma 6 with CommonJS
+
+**Status:** ✅ Accepted  
+**Context:** Initially installed Prisma 7, but encountered ESM compatibility issues with the Node.js backend running in CommonJS mode  
+**Alternatives Considered:**
+
+- Prisma 7 with ES Modules (ESM-first approach)
+- Prisma 5 (stable LTS version)
+- Prisma 6 (intermediate release)
+
+**Decision:** Use Prisma 6 with CommonJS  
+**Rationale:**
+
+- **Prisma 7 ESM Issues:** Requires full ESM migration, has dependency conflicts (zeptomatch ESM-only)
+- **Prisma 5 too old:** In maintenance mode, missing performance improvements
+- **Prisma 6 is the sweet spot:**
+  - Excellent CommonJS support (no ESM complications)
+  - Performance improvements over Prisma 5
+  - TypedSQL feature available
+  - Actively maintained
+  - Works seamlessly with Express ecosystem
+
+**Consequences:**
+
+- No ESM migration needed now
+- Better compatibility with Express/JWT/bcrypt libraries
+- Can upgrade to Prisma 7 when ecosystem matures
+- Simpler import statements (no .js extensions needed for relative imports)
+
+---
+
 ## 2026-01-17: Project Initialization
 
 ### Decision: App Name - "Lupad"
@@ -108,39 +141,6 @@ This document records important technical and architectural decisions made durin
 - Testing will be limited to local network initially
 
 **Migration Plan:**
-
----
-
-## 2026-01-18: Prisma Version Selection
-
-### Decision: Use Prisma 6 with CommonJS
-
-**Status:** ✅ Accepted  
-**Context:** Initially installed Prisma 7, but encountered ESM compatibility issues with the Node.js backend running in CommonJS mode  
-**Alternatives Considered:**
-
-- Prisma 7 with ES Modules (ESM-first approach)
-- Prisma 5 (stable LTS version)
-- Prisma 6 (intermediate release)
-
-**Decision:** Use Prisma 6 with CommonJS  
-**Rationale:**
-
-- **Prisma 7 ESM Issues:** Requires full ESM migration, has dependency conflicts (zeptomatch ESM-only)
-- **Prisma 5 too old:** In maintenance mode, missing performance improvements
-- **Prisma 6 is the sweet spot:**
-  - Excellent CommonJS support (no ESM complications)
-  - Performance improvements over Prisma 5
-  - TypedSQL feature available
-  - Actively maintained
-  - Works seamlessly with Express ecosystem
-
-**Consequences:**
-
-- No ESM migration needed now
-- Better compatibility with Express/JWT/bcrypt libraries
-- Can upgrade to Prisma 7 when ecosystem matures
-- Simpler import statements (no .js extensions needed for relative imports)
 
 - Deploy to test environment after Phase 1 completion
 - Invite friends for real-world testing

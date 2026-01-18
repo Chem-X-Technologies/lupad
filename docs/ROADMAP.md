@@ -14,27 +14,27 @@
 
 ### Week 1: Setup & Planning
 
-- [ ] Set up monorepo with Turborepo
-- [ ] Initialize Expo apps with Development Build configuration
-- [ ] Set up shared packages structure
-- [ ] Configure TypeScript, ESLint, Prettier across workspace
-- [ ] Set up Git repository & branching strategy
-- [ ] Create initial database schema design
-- [ ] Set up local development environment:
-  - Local PostgreSQL database
-  - Local Redis instance
-  - Google Maps API key (can use free tier for development)
-  - Consider mock SMS service or limited Twilio credits for testing
+- [x] Set up monorepo with Turborepo
+- [x] Initialize Expo apps with Development Build configuration
+- [x] Set up shared packages structure
+- [x] Configure TypeScript, ESLint, Prettier across workspace
+- [x] Set up Git repository & branching strategy
+- [x] Create initial database schema design
+- [x] Set up local development environment:
+  - [x] Local PostgreSQL database
+  - [x] Local Redis instance
+  - [ ] Google Maps API key (can use free tier for development)
+  - [ ] Consider mock SMS service or limited Twilio credits for testing
 
 ### Week 2: Backend Foundation
 
-- [ ] Set up Node.js + Express backend with TypeScript (running locally)
-- [ ] Configure Prisma ORM with local PostgreSQL
+- [x] Set up Node.js + Express backend with TypeScript (running locally)
+- [x] Configure Prisma ORM with local PostgreSQL
 - [ ] Implement basic API structure (REST endpoints)
-- [ ] Set up Socket.io server
+- [x] Set up Socket.io server
 - [ ] Create authentication system (JWT)
-- [ ] Set up local Redis for caching
-- [ ] Configure environment variables & secrets management
+- [x] Set up local Redis for caching
+- [x] Configure environment variables & secrets management
 - [ ] Document local development setup for team members
 
 ---
