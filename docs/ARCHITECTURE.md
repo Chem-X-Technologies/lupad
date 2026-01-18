@@ -302,7 +302,7 @@ RATE_PER_KM = 15 PHP
 - **express-async-errors** - Automatic async error handling
 - Custom error handler for Zod/Prisma errors
 - Custom validation middleware using Zod schemas
-- JWT authentication middleware (in progress)
+- JWT authentication middleware (authenticate, requireRole, requireCustomer, requireDriver)
 
 **Project Structure:**
 
@@ -318,17 +318,21 @@ apps/backend/
 │   │   ├── logger.ts         # HTTP logging
 │   │   ├── validate.ts       # Zod validation
 │   │   ├── notFound.ts       # 404 handler
-│   │   └── auth.ts           # JWT auth (in progress)
+│   │   └── auth.ts           # JWT auth middleware ✅
 │   ├── routes/
 │   │   ├── index.ts          # Route aggregator
-│   │   ├── auth.routes.ts    # Auth endpoints
+│   │   ├── auth.routes.ts    # Auth endpoints ✅
 │   │   ├── users.routes.ts   # User endpoints
 │   │   ├── rides.routes.ts   # Ride endpoints
 │   │   └── drivers.routes.ts # Driver endpoints
-│   ├── controllers/          # Request handlers (in progress)
-│   ├── services/             # Business logic (in progress)
-│   ├── schemas/              # Zod validation schemas (in progress)
-│   └── utils/                # Helper functions (in progress)
+│   ├── controllers/
+│   │   └── auth.controller.ts # Auth logic ✅
+│   ├── services/             # Business logic (to be implemented)
+│   ├── schemas/
+│   │   └── auth.schema.ts    # Auth validation schemas ✅
+│   └── utils/
+│       ├── jwt.ts            # JWT utilities ✅
+│       └── password.ts       # Password utilities ✅
 ├── prisma/
 │   ├── schema.prisma         # Database schema
 │   └── migrations/           # Migration history
@@ -337,12 +341,14 @@ apps/backend/
 
 ### REST API Endpoints
 
-**Authentication:**
+**Authentication:** ✅ Implemented
 
 - `POST /api/auth/register` - User registration (phone + OTP for customers, phone + password + OTP for drivers)
+- `POST /api/auth/verify-otp` - Verify OTP and complete registration
 - `POST /api/auth/login` - Login (send OTP for customers, phone + password for drivers)
+- `POST /api/auth/login-otp` - Complete customer login with OTP
 - `POST /api/auth/logout` - Invalidate token
-- `GET /api/auth/me` - Get current user profile
+- `GET /api/auth/me` - Get current user profile (requires authentication)
 - `POST /api/auth/refresh` - Refresh access token using refresh token
 
 **Users:**

@@ -1,22 +1,55 @@
 import { Router } from 'express';
+import * as authController from '../controllers/auth.controller.js';
+import { authenticate } from '../middleware/auth.js';
+import { validate } from '../middleware/validate.js';
+import {
+  registerSchema,
+  loginSchema,
+  verifyOtpSchema,
+  refreshTokenSchema,
+} from '../schemas/auth.schema.js';
 
 const router: Router = Router();
 
-// Placeholder routes - will implement in Priority 5
-router.post('/register', (req, res) => {
-  res.json({ message: 'Register endpoint - to be implemented' });
-});
+// POST /api/auth/register - Register new user (sends OTP)
+router.post(
+  '/register',
+  validate(registerSchema, 'body'),
+  authController.register
+);
 
-router.post('/login', (req, res) => {
-  res.json({ message: 'Login endpoint - to be implemented' });
-});
+// POST /api/auth/verify-otp - Verify OTP and complete registration
+router.post(
+  '/verify-otp',
+  validate(verifyOtpSchema, 'body'),
+  authController.verifyOtp
+);
 
-router.post('/logout', (req, res) => {
-  res.json({ message: 'Logout endpoint - to be implemented' });
-});
+// POST /api/auth/login - Login (sends OTP for customers, requires password for drivers)
+router.post(
+  '/login',
+  validate(loginSchema, 'body'),
+  authController.login
+);
 
-router.get('/me', (req, res) => {
-  res.json({ message: 'Get current user - to be implemented' });
-});
+// POST /api/auth/login-otp - Login with OTP (for customers after receiving OTP)
+router.post(
+  '/login-otp',
+  validate(verifyOtpSchema, 'body'),
+  authController.loginWithOtp
+);
+
+// POST /api/auth/refresh - Refresh access token
+router.post(
+  '/refresh',
+  validate(refreshTokenSchema, 'body'),
+  authController.refresh
+);
+
+// GET /api/auth/me - Get current user profile (requires authentication)
+router.get('/me', authenticate, authController.me);
+
+// POST /api/auth/logout - Logout (requires authentication)
+router.post('/logout', authenticate, authController.logout);
 
 export default router;

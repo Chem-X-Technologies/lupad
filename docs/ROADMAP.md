@@ -45,10 +45,10 @@
 
 **Backend:**
 
-- [ ] User registration API (customers & drivers)
-- [ ] Login/logout endpoints
-- [ ] Phone verification with OTP (via Twilio)
-- [ ] JWT token generation & validation
+- [x] User registration API (customers & drivers)
+- [x] Login/logout endpoints
+- [ ] Phone verification with OTP (via Twilio) - Currently using console logging
+- [x] JWT token generation & validation
 - [ ] User profile CRUD operations
 - [ ] Driver application & verification workflow
 
