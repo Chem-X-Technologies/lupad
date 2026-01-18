@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
+import { prisma } from './lib/prisma.js';
+import redis from './lib/redis.js';
 
 // Load environment variables
 dotenv.config();

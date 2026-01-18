@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - base for both customers and drivers
+model User {
+  id        String   @id @default(uuid())
+  phone     String   @unique
+  email     String?
+  name      String
+  userType  UserType
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  driver        Driver?
+  ridesAsCustomer Ride[] @relation("CustomerRides")
+  ridesAsDriver   Ride[] @relation("DriverRides")
+  ratingsGiven    Rating[] @relation("RatingsGiven")
+  ratingsReceived Rating[] @relation("RatingsReceived")
+
+  @@map("users")
+}
+
+// Driver-specific information
+model Driver {
+  id            String   @id @default(uuid())
+  userId        String   @unique @map("user_id")
+  vehicleType   String   @map("vehicle_type")
+  licenseNumber String   @map("license_number")
+  plateNumber   String   @map("plate_number")
+  isVerified    Boolean  @default(false) @map("is_verified")
+  isAvailable   Boolean  @default(false) @map("is_available")
+  rating        Float    @default(0.0)
+  totalRides    Int      @default(0) @map("total_rides")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  locations Location[]
+
+  @@map("drivers")
+}
+
+// Ride model
+model Ride {
+  id              String        @id @default(uuid())
+  customerId      String        @map("customer_id")
+  driverId        String?       @map("driver_id")
+  pickupLat       Float         @map("pickup_lat")
+  pickupLng       Float         @map("pickup_lng")
+  pickupAddress   String        @map("pickup_address")
+  dropoffLat      Float         @map("dropoff_lat")
+  dropoffLng      Float         @map("dropoff_lng")
+  dropoffAddress  String        @map("dropoff_address")
+  status          RideStatus    @default(PENDING)
+  fare            Float
+  distance        Float // in kilometers
+  duration        Int? // in minutes
+  paymentMethod   PaymentMethod @map("payment_method")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  startedAt       DateTime?     @map("started_at")
+  completedAt     DateTime?     @map("completed_at")
+  cancelledAt     DateTime?     @map("cancelled_at")
+
+  // Relations
+  customer User     @relation("CustomerRides", fields: [customerId], references: [id])
+  driver   User?    @relation("DriverRides", fields: [driverId], references: [id])
+  ratings  Rating[]
+
+  @@map("rides")
+}
+
+// Rating model
+model Rating {
+  id        String   @id @default(uuid())
+  rideId    String   @map("ride_id")
+  raterId   String   @map("rater_id")
+  rateeId   String   @map("ratee_id")
+  rating    Int // 1-5
+  comment   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  ride  Ride @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  rater User @relation("RatingsGiven", fields: [raterId], references: [id])
+  ratee User @relation("RatingsReceived", fields: [rateeId], references: [id])
+
+  @@map("ratings")
+}
+
+// Location tracking for drivers (real-time)
+model Location {
+  id        String   @id @default(uuid())
+  driverId  String   @map("driver_id")
+  lat       Float
+  lng       Float
+  heading   Float?
+  speed     Float?
+  timestamp DateTime @default(now())
+
+  // Relations
+  driver Driver @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  @@map("locations")
+  @@index([driverId, timestamp])
+}
+
+// Enums
+enum UserType {
+  CUSTOMER
+  DRIVER
+}
+
+enum RideStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  DIGITAL
+}
