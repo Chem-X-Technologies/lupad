@@ -41,13 +41,22 @@ cd apps/customer
 
 # Login to Expo (first time only)
 npx expo login
+eas login
 
-# Start development server
-pnpm dev
+# Initialize EAS project (first time only)
+eas init
 
-# To build development client (run this first before testing on device)
-npx eas build --profile development --platform android
+# Start development server (for Expo Go testing)
+pnpm start
+
+# To build development client (for device testing)
+eas build --profile development --platform android
 ```
+
+**Note:** The customer app uses:
+- Expo Router v4 for file-based navigation
+- NativeWind (Tailwind CSS) for styling
+- Zustand for state management
 
 ### Driver App
 
@@ -102,24 +111,25 @@ lupad/
 
 ### First Time Setup
 
-1. Login to Expo:
+1. Login to Expo and EAS:
 
 ```bash
 npx expo login
+eas login
 ```
 
-2. Link the customer app to your Expo account:
+2. Initialize the customer app project:
 
 ```bash
 cd apps/customer
-npx eas build:configure
+eas init  # This links to your Expo account and sets projectId
 ```
 
-3. Link the driver app:
+3. Initialize the driver app:
 
 ```bash
 cd apps/driver
-npx eas build:configure
+eas init
 ```
 
 ### Building Development Client
@@ -140,9 +150,80 @@ After the build completes, download the APK to your phone and install it.
 
 ## Local Development Environment
 
-### Database Setup (Coming Soon)
+### Database Setup
 
-Instructions for setting up PostgreSQL and Redis locally will be added here.
+#### PostgreSQL
+
+1. Install PostgreSQL (v14+):
+   ```bash
+   # Ubuntu/Debian
+   sudo apt install postgresql postgresql-contrib
+
+   # macOS with Homebrew
+   brew install postgresql@14
+   ```
+
+2. Start PostgreSQL service:
+   ```bash
+   # Ubuntu/Debian
+   sudo systemctl start postgresql
+
+   # macOS
+   brew services start postgresql@14
+   ```
+
+3. Create database and user:
+   ```bash
+   sudo -u postgres psql
+   CREATE DATABASE lupad_dev;
+   CREATE USER lupad_user WITH ENCRYPTED PASSWORD 'your_password';
+   GRANT ALL PRIVILEGES ON DATABASE lupad_dev TO lupad_user;
+   \q
+   ```
+
+4. Update `apps/backend/.env`:
+   ```env
+   DATABASE_URL="postgresql://lupad_user:your_password@localhost:5432/lupad_dev"
+   ```
+
+5. Run migrations:
+   ```bash
+   cd apps/backend
+   npx prisma migrate dev
+   ```
+
+#### Redis
+
+1. Install Redis (v6+):
+   ```bash
+   # Ubuntu/Debian
+   sudo apt install redis-server
+
+   # macOS with Homebrew
+   brew install redis
+   ```
+
+2. Start Redis service:
+   ```bash
+   # Ubuntu/Debian
+   sudo systemctl start redis
+
+   # macOS
+   brew services start redis
+   ```
+
+3. Update `apps/backend/.env`:
+   ```env
+   REDIS_URL="redis://localhost:6379"
+   ```
+
+#### Verify Connections
+
+```bash
+cd apps/backend
+pnpm dev
+# Check console for "Database connected" and "Redis connected" messages
+```
 
 ## Troubleshooting
 

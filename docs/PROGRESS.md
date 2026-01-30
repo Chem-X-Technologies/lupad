@@ -1,13 +1,14 @@
 # Lupad - Development Progress
 
-**Last Updated:** January 18, 2026  
-**Current Phase:** Pre-Development (Week 2) - COMPLETED  
-**Currently Working On:** Ready to begin Phase 1 - MVP Development
+**Last Updated:** January 30, 2026
+**Current Phase:** Phase 1 - MVP Development (Week 3-4)
+**Currently Working On:** Customer App Onboarding Complete, Next: Maps & Booking
 
 ---
 
 ## ✅ Completed
 
+### Pre-Development Phase (Week 1-2)
 - [x] Project planning and technology stack selection
 - [x] Created detailed project roadmap (ROADMAP.md)
 - [x] Decided on local development strategy for Phase 1
@@ -41,34 +42,53 @@
 - [x] Hybrid authentication system working (passwordless for customers, password for drivers)
 - [x] All authentication endpoints tested successfully
 
+### Phase 1 - Week 3-4: Customer App Onboarding & Auth
+- [x] User Profile CRUD API (GET/PUT/DELETE /api/users/me)
+- [x] Driver Profile API (profile, vehicle, availability, stats)
+- [x] Shared API client factory with token interceptors (packages/shared-utils)
+- [x] NativeWind (Tailwind CSS) configured with custom theme colors
+- [x] Expo Router v4 file-based navigation setup
+- [x] Customer app splash screen with Lupad branding
+- [x] Onboarding slides with PagerView
+- [x] Phone registration screen (+63 format)
+- [x] OTP verification screen with countdown timer
+- [x] Nickname setup screen
+- [x] Auth store with Zustand (state management)
+- [x] Auth service with API integration
+- [x] Auth-aware routing (loading → auth check → redirect)
+- [x] Home screen placeholder with logout
+- [x] EAS Build configured and project linked
+- [x] Design system documented from Figma designs
+- [x] Phase 1 MVP plan documented
+
 ---
 
 ## 🚧 In Progress
 
-_Nothing currently in progress - ready for next phase!_
+_Preparing for Week 5: Maps & Location features_
 
 ---
 
 ## ⏭️ Next Steps (Immediate)
 
-1. Begin Phase 1 - MVP Development
-2. Implement user management APIs (profile CRUD)
-3. Create phone verification with Twilio integration
-4. Build onboarding screens in mobile apps
-5. Implement registration/login flows in Customer app
-6. Implement registration/login flows in Driver app
-7. Build and test Expo apps on physical Android device
+1. Build development APK with EAS Build
+2. Test Customer app auth flow on physical device
+3. Implement Driver app onboarding (password-based auth)
+4. Set up Google Maps API integration
+5. Build home screen with map view
+6. Implement destination picker
 
 ---
 
 ## 📅 Current Sprint Goals
 
-**Week 1 Goals (Pre-Development Phase):**
+**Week 5 Goals (Maps + Location + Destination):**
 
-- Complete monorepo setup
-- Initialize all apps and packages
-- Set up local development environment
-- Create initial database schema design
+- Set up react-native-maps with Google Maps
+- Implement current location detection
+- Build destination search with Google Places
+- Create fare estimation API
+- Build ride booking confirmation screen
 
 ---
 
@@ -81,7 +101,10 @@ _No blockers currently_
 ## 📊 Phase Completion Status
 
 - **Pre-Development (Week 1-2):** ✅ 100% COMPLETE
-- **Phase 1: MVP Development (Week 3-8):** ⚪ Not Started (Ready to begin)
+- **Phase 1: MVP Development (Week 3-8):** 🟡 33% (Week 3-4 Customer App Done)
+  - Week 3-4: ✅ Customer App Auth Complete
+  - Week 5-6: ⚪ Maps & Booking (Next)
+  - Week 7-8: ⚪ Driver App & Real-time
 - **Phase 2: Essential Features (Week 9-11):** ⚪ Not Started
 - **Phase 3: Polish & Testing (Week 12-13):** ⚪ Not Started
 - **Phase 4: Pre-Launch (Week 14-15):** ⚪ Not Started
@@ -90,6 +113,16 @@ _No blockers currently_
 ---
 
 ## 🎯 Milestones Achieved
+
+**January 30, 2026:**
+
+- ✅ Customer app onboarding & auth flow COMPLETE
+- ✅ Shared API client with token management
+- ✅ NativeWind styling configured
+- ✅ Zustand auth store implemented
+- ✅ EAS Build configured and project linked
+- ✅ Design system documented
+- ✅ **Phase 1 Week 3-4 (Customer App) COMPLETED**
 
 **January 18, 2026:**
 

@@ -1,3 +1,13 @@
+// API client exports
+export {
+  createApiClient,
+  getApiErrorMessage,
+  type ApiResponse,
+  type ApiError,
+  type TokenStorage,
+  type ApiClientConfig,
+} from './api';
+
 /**
  * Calculate the distance between two coordinates using Haversine formula
  * @param lat1 Latitude of first point

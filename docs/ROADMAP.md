@@ -32,7 +32,7 @@
 - [x] Configure Prisma ORM with local PostgreSQL
 - [x] Implement basic API structure (REST endpoints)
 - [x] Set up Socket.io server
-- [ ] Create authentication system (JWT)
+- [x] Create authentication system (JWT)
 - [x] Set up local Redis for caching
 - [x] Configure environment variables & secrets management
 - [ ] Document local development setup for team members
@@ -47,20 +47,30 @@
 
 - [x] User registration API (customers & drivers)
 - [x] Login/logout endpoints
-- [ ] Phone verification with OTP (via Twilio) - Currently using console logging
+- [x] Phone verification with OTP (console logging - Twilio deferred to Phase 2)
 - [x] JWT token generation & validation
-- [ ] User profile CRUD operations
-- [ ] Driver application & verification workflow
+- [x] User profile CRUD operations
+- [x] Driver profile API (profile, vehicle, availability, stats)
 
-**Frontend (Both Apps):**
+**Frontend (Customer App):**
 
-- [ ] Onboarding/splash screens
-- [ ] Registration flow with phone verification
-- [ ] Login screen
-- [ ] Profile setup screens
-- [ ] Basic navigation structure
+- [x] Splash screen with Lupad branding
+- [x] Onboarding slides (PagerView)
+- [x] Registration flow with phone input
+- [x] OTP verification screen
+- [x] Nickname setup screen
+- [x] Auth-aware navigation with Zustand store
+- [x] API client with token interceptors (shared package)
+- [x] EAS Build configured for dev builds
 
-**Deliverable:** Users can register, verify phone, and log in
+**Frontend (Driver App):**
+
+- [ ] Registration with vehicle info
+- [ ] Password login
+- [ ] OTP verification
+- [ ] Driver profile
+
+**Deliverable:** ✅ Customer app users can register, verify phone, set nickname, and log in
 
 ### Week 5-6: Core Booking Flow (Customer App)
 

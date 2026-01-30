@@ -22,6 +22,7 @@ After reviewing, please:
 - Summarize what phase we're currently in
 - Identify what was last worked on
 - Confirm you understand the tech stack
+- Note: Follow the "Feature-First Development Approach" documented below
 
 Then help me with: [describe your specific task]
 ```
@@ -321,6 +322,83 @@ Always read these before asking AI questions!
 
 ---
 
-**Last Updated:** January 17, 2026
+## 🏗️ Feature-First Development Approach
+
+**IMPORTANT:** When planning and implementing features, follow a feature-centered approach rather than setting up all infrastructure upfront.
+
+### Principles
+
+1. **Build feature by feature, end-to-end**
+   - Complete one feature before moving to the next
+   - Each feature should be testable on its own
+   - Avoid setting up infrastructure "just in case"
+
+2. **Install dependencies only when needed**
+   - Don't install packages until the feature requires them
+   - This keeps the project lean and avoids unused dependencies
+   - Makes it easier to track what each dependency is used for
+
+3. **Backend + Frontend together**
+   - Build the backend API endpoints and frontend screens for a feature in the same work session
+   - This ensures the API design matches what the UI actually needs
+   - Easier to iterate when both sides are developed together
+
+4. **Design for extensibility**
+   - Even though we build incrementally, keep code modular and extensible
+   - Follow established patterns so new features fit naturally
+   - Don't over-engineer, but don't paint yourself into a corner either
+
+### Example: Building the Auth Feature
+
+**Instead of:**
+1. Install all 15 dependencies for the entire app
+2. Set up all navigation screens (empty)
+3. Create all API endpoints (unused)
+4. Then build features one by one
+
+**Do this:**
+1. Identify what the Auth feature needs (expo-router, zustand, axios, expo-secure-store)
+2. Install only those dependencies
+3. Build splash screen → onboarding → registration → OTP → nickname (complete flow)
+4. Connect to backend auth APIs
+5. Test the complete auth flow
+6. Move to next feature
+
+### Benefits
+
+- **Easier to follow**: Work in logical chunks, not scattered setup tasks
+- **Faster feedback**: See working features sooner
+- **Less waste**: Don't build things you might not need
+- **Better context**: Backend and frontend developers (or AI) understand the full feature
+- **Simpler debugging**: When something breaks, you know which feature caused it
+
+### When Planning with AI
+
+When asking AI to plan implementation:
+
+```
+I want to build the [feature name] feature.
+
+Please:
+1. Identify ONLY the dependencies needed for this feature
+2. Plan the backend endpoints required
+3. Plan the frontend screens required
+4. Create a task list that builds the feature end-to-end
+5. Keep the implementation extensible for future features
+```
+
+### Feature Checklist
+
+For each feature, ensure:
+- [ ] Only required dependencies are installed
+- [ ] Backend endpoints are created and tested
+- [ ] Frontend screens are created and connected
+- [ ] Feature works end-to-end
+- [ ] Code follows established patterns
+- [ ] Documentation is updated (PROGRESS.md)
+
+---
+
+**Last Updated:** January 30, 2026
 
 **Tip:** Bookmark this file in your browser/editor for quick access! 🔖

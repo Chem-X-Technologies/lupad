@@ -4,6 +4,108 @@ This document records important technical and architectural decisions made durin
 
 ---
 
+## 2026-01-30: Feature-First Development Approach
+
+### Decision: Build Features End-to-End Instead of Infrastructure-First
+
+**Status:** ✅ Accepted
+**Context:** Need to decide development approach for Phase 1 MVP
+**Alternatives Considered:**
+
+- Infrastructure-first: Build all shared components, then all screens
+- Feature-first: Build complete features one at a time (backend → frontend → integration)
+
+**Decision:** Use feature-first development approach
+**Rationale:**
+
+- Faster feedback loops - can test features immediately
+- Better context retention - work on related code together
+- Reduces over-engineering - build only what's needed
+- More satisfying progress - complete features instead of partial systems
+- Easier to pivot if requirements change
+
+**Consequences:**
+
+- May have some code duplication initially (acceptable)
+- Features are independently testable
+- Team can see tangible progress faster
+- Documented in AI_INSTRUCTIONS.md for consistency
+
+---
+
+## 2026-01-30: Shared Code Architecture (Hybrid Approach)
+
+### Decision: Share API Client, Keep Auth Logic Per App
+
+**Status:** ✅ Accepted
+**Context:** Customer and Driver apps have different auth flows (OTP vs password)
+**Alternatives Considered:**
+
+- Fully shared: Everything in shared-utils (complex, tightly coupled)
+- Fully separate: Duplicate all code per app (more maintenance)
+- Hybrid: Share common utilities, keep app-specific logic separate
+
+**Decision:** Hybrid approach
+**Structure:**
+
+- `packages/shared-utils/src/api.ts` - API client factory, token interceptors, types
+- `apps/customer/src/services/auth.ts` - Customer-specific auth (OTP-based)
+- `apps/driver/src/services/auth.ts` - Driver-specific auth (password-based)
+
+**Rationale:**
+
+- Customer: Passwordless OTP flow (simpler, frictionless)
+- Driver: Password + optional OTP (more secure for earnings/payouts)
+- API client is identical - share to avoid duplication
+- Auth logic differs significantly - keep separate for clarity
+
+**Consequences:**
+
+- Clear separation of concerns
+- Each app can evolve auth independently
+- Shared code is truly reusable
+- No awkward conditional logic in shared code
+
+---
+
+## 2026-01-30: Mobile Styling with NativeWind
+
+### Decision: Use NativeWind (Tailwind CSS for React Native)
+
+**Status:** ✅ Accepted
+**Context:** Need styling solution for Customer and Driver apps
+**Alternatives Considered:**
+
+- StyleSheet (native RN - verbose, no theming)
+- Styled Components (runtime overhead)
+- Tamagui (complex setup)
+- NativeWind (Tailwind for RN)
+- Gluestack UI (component library)
+
+**Decision:** NativeWind v4 with Tailwind CSS v3
+**Rationale:**
+
+- Familiar Tailwind syntax (team already knows it)
+- Rapid prototyping with utility classes
+- Easy theming with custom colors
+- Good TypeScript support
+- Matches design system colors easily
+- Small runtime overhead
+
+**Configuration:**
+
+- Custom theme colors: primary (#00BFA5), secondary (#FFB300)
+- Gray scale: dark (#333333), medium (#9E9E9E), light (#E0E0E0)
+
+**Consequences:**
+
+- Team needs React Native + Tailwind knowledge
+- className strings instead of StyleSheet objects
+- Some advanced styling may need native StyleSheet
+- Design system colors documented in DESIGN_SYSTEM.md
+
+---
+
 ## 2026-01-18: Authentication Strategy
 
 ### Decision: Hybrid Authentication - Passwordless for Customers, Password-Based for Drivers

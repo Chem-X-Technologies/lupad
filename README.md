@@ -8,7 +8,7 @@
 
 - **Type:** Ride-hailing mobile application
 - **Target Market:** Calbayog City, Samar, Philippines
-- **Development Status:** Pre-Development Phase
+- **Development Status:** Phase 1 MVP Development (Week 3-4 Complete)
 - **Architecture:** Monorepo with separate customer and driver apps
 - **Tech Stack:** Expo (React Native), Node.js, PostgreSQL, Redis
 
@@ -43,11 +43,12 @@ lupad/
 
 ### Frontend (Mobile Apps)
 
-- **Expo SDK** with Development Build (not Expo Go)
+- **Expo SDK 53** with Development Build (not Expo Go)
+- **Expo Router v4** for file-based navigation
 - **TypeScript** for type safety
-- **React Navigation** for routing
-- **Zustand** or **Jotai** for state management
-- **React Query (TanStack Query)** for server state management
+- **NativeWind v4** (Tailwind CSS) for styling
+- **Zustand** for state management
+- **TanStack Query v5** for server state management
 - **react-native-maps** for map display
 - **Expo Location** for GPS tracking
 - **Socket.io-client** for real-time updates
@@ -77,25 +78,48 @@ lupad/
 
 ## 🚀 Getting Started
 
-> **Note:** This section will be expanded as the project is set up.
-
 ### Prerequisites
 
-- **Node.js** (v18 or higher recommended)
-- **npm** or **pnpm** (pnpm recommended for monorepo)
-- **PostgreSQL** (v14 or higher)
-- **Redis** (v6 or higher)
-- **Git**
-- **Expo CLI**
+- **Node.js** v22 LTS
+- **pnpm** v10+ (package manager)
+- **PostgreSQL** v14+ (local instance)
+- **Redis** v6+ (local instance)
+- **Expo CLI** and EAS CLI
 - **Android Studio** (for Android development) or **Xcode** (for iOS development)
+- **Expo account** (for EAS builds)
 
 ### Installation
 
-_Instructions will be added after initial setup_
+```bash
+# Clone the repository
+git clone <repo-url>
+cd lupad
+
+# Install dependencies
+pnpm install
+
+# Setup environment variables
+cp apps/backend/.env.example apps/backend/.env
+# Edit .env with your database credentials
+```
 
 ### Running the Project Locally
 
-_Instructions will be added after initial setup_
+```bash
+# 1. Start PostgreSQL and Redis services
+
+# 2. Start the backend API
+cd apps/backend
+pnpm dev
+
+# 3. In a new terminal, start the customer app
+cd apps/customer
+pnpm start
+
+# 4. Scan QR code with Expo Go or use development build
+```
+
+For detailed setup instructions, see **[SETUP.md](SETUP.md)**
 
 ---
 
@@ -202,4 +226,4 @@ _Project is in early development phase_
 
 ---
 
-**Last Updated:** January 17, 2026
+**Last Updated:** January 30, 2026

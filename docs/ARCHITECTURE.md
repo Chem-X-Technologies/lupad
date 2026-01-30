@@ -1,7 +1,7 @@
 # Lupad - Technical Architecture
 
-**Last Updated:** January 18, 2026  
-**Status:** In Development (Pre-Development Phase 98% Complete)
+**Last Updated:** January 30, 2026
+**Status:** Phase 1 MVP Development (Week 3-4 Complete)
 
 ---
 
@@ -56,16 +56,95 @@ Lupad follows a **client-server architecture** with real-time capabilities:
 ```
 lupad/
 ├── apps/
-│   ├── customer/       # Customer mobile app
-│   ├── driver/         # Driver mobile app
-│   └── backend/        # API server
+│   ├── customer/       # Customer mobile app (Expo Router + NativeWind)
+│   ├── driver/         # Driver mobile app (Expo Router + NativeWind)
+│   └── backend/        # API server (Express + Prisma)
 ├── packages/
 │   ├── shared-types/   # TypeScript definitions shared across apps
 │   ├── shared-ui/      # Reusable React Native components
-│   ├── shared-utils/   # Common utility functions
+│   ├── shared-utils/   # Common utility functions + API client
 │   └── shared-config/  # ESLint, TypeScript, Prettier configs
 └── turbo.json          # Turborepo configuration
 ```
+
+---
+
+## 📱 Mobile App Architecture
+
+### Technology Stack (Customer & Driver Apps)
+
+| Component | Choice | Purpose |
+|-----------|--------|---------|
+| **Framework** | Expo SDK 53 | React Native with managed workflow |
+| **Navigation** | Expo Router v4 | File-based routing, deep linking |
+| **Styling** | NativeWind v4 + Tailwind v3 | Utility-first CSS, custom theme |
+| **State Management** | Zustand | Lightweight, TypeScript-first |
+| **Server State** | TanStack Query v5 | Caching, background refetch |
+| **API Client** | Axios | Interceptors, token refresh |
+| **Secure Storage** | expo-secure-store | JWT token storage |
+| **Maps** | react-native-maps | Google Maps integration |
+| **Location** | expo-location | GPS and background tracking |
+
+### Customer App Structure
+
+```
+apps/customer/
+├── app/                      # Expo Router file-based routes
+│   ├── _layout.tsx           # Root layout (providers, auth init)
+│   ├── index.tsx             # Entry point (auth-aware redirect)
+│   ├── (auth)/               # Auth flow (unauthenticated)
+│   │   ├── _layout.tsx       # Auth stack layout
+│   │   ├── onboarding.tsx    # Welcome slides
+│   │   ├── register.tsx      # Phone input
+│   │   ├── verify-otp.tsx    # OTP verification
+│   │   └── nickname.tsx      # Nickname setup
+│   └── (app)/                # Main app (authenticated)
+│       ├── _layout.tsx       # App stack layout
+│       └── index.tsx         # Home screen (placeholder)
+├── src/
+│   ├── services/
+│   │   ├── api.ts            # API client (uses shared-utils)
+│   │   └── auth.ts           # Auth API functions (OTP-based)
+│   └── stores/
+│       └── authStore.ts      # Zustand auth state
+├── tailwind.config.js        # Custom theme colors
+├── global.css                # Tailwind directives
+└── eas.json                  # EAS Build configuration
+```
+
+### Shared API Client Architecture
+
+```
+packages/shared-utils/
+└── src/
+    ├── api.ts                # createApiClient factory
+    │   ├── TokenStorage interface
+    │   ├── Request interceptor (add Bearer token)
+    │   └── Response interceptor (auto-refresh on 401)
+    └── index.ts              # Exports + utility functions
+```
+
+**Usage in apps:**
+```typescript
+// apps/customer/src/services/api.ts
+import { createApiClient, TokenStorage } from '@lupad/shared-utils';
+
+const tokenStorage: TokenStorage = {
+  getAccessToken: () => SecureStore.getItemAsync('access_token'),
+  // ... other methods using expo-secure-store
+};
+
+export const api = createApiClient({ baseURL, tokenStorage });
+```
+
+### Design System (NativeWind Theme)
+
+Custom colors defined in `tailwind.config.js`:
+- **Primary:** `#00BFA5` (Teal - brand color)
+- **Secondary:** `#FFB300` (Orange/Amber - CTAs)
+- **Gray Dark:** `#333333` (Text)
+- **Gray Medium:** `#9E9E9E` (Secondary text)
+- **Gray Light:** `#E0E0E0` (Borders, backgrounds)
 
 ---
 
