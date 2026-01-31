@@ -38,8 +38,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": ""
-      }
-    }
+        "projectId": "04e0e37c-e137-402f-a045-6eb5de338c75"
+      },
+      "router": {}
+    },
+    "owner": "chemical-x"
   }
 }
