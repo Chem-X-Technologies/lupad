@@ -126,15 +126,26 @@ cp .env.example .env
 
 ## 🎯 Next Development Steps
 
-According to your roadmap, you should now:
+According to your roadmap, current progress:
 
-1. ✅ Complete Pre-Development Phase (~90% done)
-   - Set up PostgreSQL and Redis
-   - Test the complete stack
+1. ✅ Pre-Development Phase - COMPLETED
+   - Monorepo setup with Turborepo and pnpm
+   - PostgreSQL and Redis configured
+   - EAS Build configured for development builds
 
-2. 🚀 Start Phase 1: MVP Development
-   - Week 3-4: User Management & Authentication
-   - Week 5-6: Core Booking Flow (Customer App)
+2. ✅ Week 3-4: User Management & Authentication - COMPLETED
+   - Customer app authentication flow (OTP-based)
+   - Phone number verification screens
+   - Secure token storage with expo-secure-store
+   - Auth state management with Zustand
+
+3. 🚀 Current: Week 5-6: Core Booking Flow (Customer App)
+   - Location selection and search
+   - Fare calculation
+   - Booking confirmation
+   - Ride tracking
+
+4. 📋 Upcoming:
    - Week 7: Driver App Core Features
    - Week 8: Real-time Communication & Testing
 

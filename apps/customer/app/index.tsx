@@ -14,10 +14,10 @@ export default function Index() {
     );
   }
 
-  // If authenticated, go to app (or nickname if not set)
+  // If authenticated, go to app (or name screen if not set)
   if (isAuthenticated) {
-    if (!user?.nickname) {
-      return <Redirect href="/(auth)/nickname" />;
+    if (!user?.name) {
+      return <Redirect href="/(auth)/name" />;
     }
     return <Redirect href="/(app)" />;
   }

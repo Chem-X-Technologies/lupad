@@ -130,6 +130,25 @@ export const refreshTokenSchema = z.object({
 });
 
 /**
+ * OTP request schema - simplified for customer app
+ */
+export const otpRequestSchema = z.object({
+  phone: z
+    .string()
+    .regex(phoneRegex, 'Invalid Philippine phone number format')
+    .transform((val) => {
+      // Normalize to +639XXXXXXXXX format
+      if (val.startsWith('09')) {
+        return `+63${val.substring(1)}`;
+      }
+      if (val.startsWith('639')) {
+        return `+${val}`;
+      }
+      return val;
+    }),
+});
+
+/**
  * Update profile schema
  */
 export const updateProfileSchema = z.object({
@@ -154,3 +173,4 @@ export type LoginInput = z.infer<typeof loginSchema>;
 export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;
 export type RefreshTokenInput = z.infer<typeof refreshTokenSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type OtpRequestInput = z.infer<typeof otpRequestSchema>;

@@ -65,9 +65,9 @@ export default function VerifyOtpScreen() {
     try {
       await verifyOtp(otpString);
 
-      // Check if user needs to set nickname (new user)
-      if (!user?.nickname) {
-        router.push('/(auth)/nickname');
+      // Check if user needs to set name (new user)
+      if (!user?.name) {
+        router.push('/(auth)/name');
       } else {
         // Existing user - go to home
         router.replace('/(app)');

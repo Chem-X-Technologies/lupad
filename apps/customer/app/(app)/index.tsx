@@ -16,7 +16,7 @@ export default function HomeScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 items-center justify-center px-6">
         <Text className="text-2xl font-bold text-gray-dark mb-4">
-          Welcome{user?.nickname ? `, ${user.nickname}` : ''}!
+          Welcome{user?.name ? `, ${user.name}` : ''}!
         </Text>
         <Text className="text-base text-gray-medium text-center mb-8">
           You've completed the onboarding flow. The home screen with map will be built in the next feature.

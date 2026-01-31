@@ -5,7 +5,7 @@ import { hashPassword, comparePassword } from '../utils/password.js';
 import { generateTokenPair, verifyRefreshToken, TokenPayload } from '../utils/jwt.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { UserType, AuthMethod } from '@prisma/client';
-import type { RegisterInput, LoginInput, VerifyOtpInput, RefreshTokenInput } from '../schemas/auth.schema.js';
+import type { RegisterInput, LoginInput, VerifyOtpInput, RefreshTokenInput, OtpRequestInput } from '../schemas/auth.schema.js';
 
 /**
  * Generate a 6-digit OTP
@@ -513,6 +513,171 @@ export const logout = async (
     res.status(200).json({
       success: true,
       message: 'Logged out successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Request OTP - Simplified flow for customer app
+ * Handles both new and existing users
+ */
+export const requestOtpSimple = async (
+  req: Request<{}, {}, OtpRequestInput>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { phone } = req.body;
+
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { phone },
+      select: { id: true },
+    });
+
+    // Generate OTP
+    const otp = generateOtp();
+    const otpExpiry = Date.now() + 5 * 60 * 1000; // 5 minutes
+
+    // Store OTP in Redis with user existence flag
+    await redisHelpers.set(
+      `otp:${phone}`,
+      JSON.stringify({
+        otp,
+        expiry: otpExpiry,
+        isNewUser: !existingUser,
+        userId: existingUser?.id || null,
+      }),
+      300 // 5 minutes TTL
+    );
+
+    // Send OTP
+    await sendOtp(phone, otp);
+
+    // Calculate expiry time for response
+    const expiresAt = new Date(otpExpiry).toISOString();
+
+    res.status(200).json({
+      success: true,
+      message: 'OTP sent successfully',
+      data: {
+        message: 'OTP sent to your phone number',
+        expiresAt,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Verify OTP - Simplified flow for customer app
+ * Creates user if new, returns tokens for both cases
+ */
+export const verifyOtpSimple = async (
+  req: Request<{}, {}, VerifyOtpInput>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { phone, otp } = req.body;
+
+    // Get OTP data from Redis
+    const otpData = await redisHelpers.get(`otp:${phone}`);
+
+    if (!otpData) {
+      throw new AppError(400, 'OTP expired or invalid');
+    }
+
+    const { otp: storedOtp, expiry, isNewUser, userId } = JSON.parse(otpData as string);
+
+    // Check if OTP is expired
+    if (Date.now() > expiry) {
+      await redisHelpers.del(`otp:${phone}`);
+      throw new AppError(400, 'OTP expired');
+    }
+
+    // Verify OTP
+    if (otp !== storedOtp) {
+      throw new AppError(400, 'Invalid OTP');
+    }
+
+    let user;
+
+    if (isNewUser) {
+      // Create new user with empty name (will be set during onboarding)
+      user = await prisma.user.create({
+        data: {
+          phone,
+          name: '',
+          userType: UserType.CUSTOMER,
+          authMethod: AuthMethod.OTP,
+        },
+        select: {
+          id: true,
+          phone: true,
+          name: true,
+          email: true,
+          userType: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+    } else {
+      // Get existing user
+      user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          phone: true,
+          name: true,
+          email: true,
+          userType: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+
+      if (!user) {
+        throw new AppError(404, 'User not found');
+      }
+    }
+
+    // Clean up OTP
+    await redisHelpers.del(`otp:${phone}`);
+
+    // Generate tokens
+    const tokenPayload: TokenPayload = {
+      userId: user.id,
+      userType: user.userType as 'CUSTOMER' | 'DRIVER',
+      phone: user.phone,
+      authMethod: 'OTP',
+    };
+
+    const { accessToken, refreshToken } = generateTokenPair(tokenPayload);
+
+    // Map response to match frontend expectations
+    res.status(200).json({
+      success: true,
+      message: isNewUser ? 'Registration successful' : 'Login successful',
+      data: {
+        user: {
+          id: user.id,
+          phone: user.phone,
+          name: user.name,
+          email: user.email,
+          role: user.userType, // Map userType to role for frontend
+          isVerified: true,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+        tokens: {
+          accessToken,
+          refreshToken,
+        },
+      },
     });
   } catch (error) {
     next(error);

@@ -4,6 +4,75 @@ This document records important technical and architectural decisions made durin
 
 ---
 
+## 2026-01-31: Simplified OTP Auth Flow for Customer App
+
+### Decision: Add Unified OTP Endpoints That Handle Both New and Existing Users
+
+**Status:** ✅ Accepted
+**Context:** The original backend had separate register/login flows which required the frontend to know if a user existed before requesting OTP
+**Alternatives Considered:**
+
+- Keep separate register and login flows (more frontend complexity)
+- Have frontend check user existence first, then call appropriate endpoint (extra API call)
+- Unified flow: one endpoint handles both cases (simpler frontend)
+
+**Decision:** Add `/auth/otp/request` and `/auth/otp/verify` endpoints
+**Rationale:**
+
+- Simpler frontend code - just request OTP for any phone number
+- Better UX - user doesn't need to know if they're "registering" or "logging in"
+- Backend determines if user is new and creates account on verification
+- Matches modern auth flows (WhatsApp, Telegram style)
+- Original endpoints kept for backwards compatibility and driver app
+
+**Consequences:**
+
+- Two auth flows coexist: original (register/login) and simplified (otp/request, otp/verify)
+- Customer app uses simplified flow
+- Driver app will use original password-based flow
+- Slightly more backend code, but much simpler frontend
+
+---
+
+## 2026-01-31: Dynamic Environment Configuration with app.config.ts
+
+### Decision: Replace app.json with app.config.ts for Dynamic Configuration
+
+**Status:** ✅ Accepted
+**Context:** Need to configure API URL differently for development (local IP) vs production without rebuilding
+**Alternatives Considered:**
+
+- Hardcode API URL and rebuild for each environment (slow, error-prone)
+- Use static app.json with environment in code (can't change bundler host)
+- Dynamic app.config.ts with environment variables (flexible)
+
+**Decision:** Use app.config.ts with EXPO_PUBLIC_API_URL env variable
+**Rationale:**
+
+- Environment variables read at build/dev time
+- No code changes needed between environments
+- Each developer can have their own .env.development with their local IP
+- Production URL configured via EAS Secrets
+- REACT_NATIVE_PACKAGER_HOSTNAME also configurable for WSL
+
+**Configuration:**
+```
+apps/customer/
+├── app.config.ts         # Dynamic config (reads env vars)
+├── .env.development      # Local dev config (gitignored)
+├── .env.production       # Production config (gitignored)
+└── .env.example          # Template for developers
+```
+
+**Consequences:**
+
+- app.json deleted (replaced by app.config.ts)
+- Each developer needs to create .env.development
+- More flexible deployment and testing
+- WSL users can configure Windows IP for device testing
+
+---
+
 ## 2026-01-30: Feature-First Development Approach
 
 ### Decision: Build Features End-to-End Instead of Infrastructure-First

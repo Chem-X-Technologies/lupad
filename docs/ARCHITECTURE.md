@@ -75,7 +75,7 @@ lupad/
 
 | Component | Choice | Purpose |
 |-----------|--------|---------|
-| **Framework** | Expo SDK 53 | React Native with managed workflow |
+| **Framework** | Expo SDK 54 | React Native with managed workflow |
 | **Navigation** | Expo Router v4 | File-based routing, deep linking |
 | **Styling** | NativeWind v4 + Tailwind v3 | Utility-first CSS, custom theme |
 | **State Management** | Zustand | Lightweight, TypeScript-first |
@@ -97,7 +97,7 @@ apps/customer/
 │   │   ├── onboarding.tsx    # Welcome slides
 │   │   ├── register.tsx      # Phone input
 │   │   ├── verify-otp.tsx    # OTP verification
-│   │   └── nickname.tsx      # Nickname setup
+│   │   └── name.tsx          # Name setup
 │   └── (app)/                # Main app (authenticated)
 │       ├── _layout.tsx       # App stack layout
 │       └── index.tsx         # Home screen (placeholder)
@@ -107,6 +107,7 @@ apps/customer/
 │   │   └── auth.ts           # Auth API functions (OTP-based)
 │   └── stores/
 │       └── authStore.ts      # Zustand auth state
+├── app.config.ts             # Dynamic Expo config (env vars)
 ├── tailwind.config.js        # Custom theme colors
 ├── global.css                # Tailwind directives
 └── eas.json                  # EAS Build configuration
@@ -429,6 +430,11 @@ apps/backend/
 - `POST /api/auth/logout` - Invalidate token
 - `GET /api/auth/me` - Get current user profile (requires authentication)
 - `POST /api/auth/refresh` - Refresh access token using refresh token
+
+**Simplified OTP Flow (Customer App):** ✅ Implemented
+
+- `POST /api/auth/otp/request` - Request OTP (works for both new and existing users)
+- `POST /api/auth/otp/verify` - Verify OTP and get tokens (creates user if new)
 
 **Users:**
 

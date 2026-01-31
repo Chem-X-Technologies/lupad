@@ -225,6 +225,47 @@ pnpm dev
 # Check console for "Database connected" and "Redis connected" messages
 ```
 
+## Testing on Physical Device (WSL/Windows)
+
+If you're developing on WSL (Windows Subsystem for Linux) and want to test on a physical Android device, additional networking setup is required.
+
+### 1. Configure Environment Variables
+
+Create `apps/customer/.env.development`:
+```env
+# Get your Windows IP: powershell.exe -Command "Get-NetIPAddress -AddressFamily IPv4 | Where-Object InterfaceAlias -eq 'Wi-Fi'"
+EXPO_PUBLIC_API_URL=http://YOUR_WINDOWS_IP:3000/api
+REACT_NATIVE_PACKAGER_HOSTNAME=YOUR_WINDOWS_IP
+```
+
+### 2. Set Up Port Forwarding (PowerShell as Admin)
+
+```powershell
+# Get WSL IP
+wsl hostname -I
+
+# Forward ports from Windows to WSL (replace WSL_IP with actual IP)
+netsh interface portproxy add v4tov4 listenport=8081 listenaddress=0.0.0.0 connectport=8081 connectaddress=WSL_IP
+netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=WSL_IP
+
+# Allow ports through Windows Firewall
+netsh advfirewall firewall add rule name="Expo Metro" dir=in action=allow protocol=TCP localport=8081
+netsh advfirewall firewall add rule name="Lupad Backend" dir=in action=allow protocol=TCP localport=3000
+```
+
+### 3. Start Development Server
+
+```bash
+cd apps/customer
+REACT_NATIVE_PACKAGER_HOSTNAME=YOUR_WINDOWS_IP pnpm dev
+```
+
+### 4. Connect Phone
+
+1. Ensure phone and computer are on the same Wi-Fi network
+2. Scan the QR code from the Expo dev server
+3. The app should connect and load
+
 ## Troubleshooting
 
 ### Port Already in Use

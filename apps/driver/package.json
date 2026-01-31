@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "expo start --dev-client",
+    "dev-off": "expo start --dev-client",
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",

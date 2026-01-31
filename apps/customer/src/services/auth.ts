@@ -10,7 +10,7 @@ export interface AuthTokens {
 export interface User {
   id: string;
   phone: string;
-  nickname: string | null;
+  name: string | null;
   email: string | null;
   role: 'CUSTOMER' | 'DRIVER' | 'ADMIN';
   isVerified: boolean;
@@ -66,12 +66,12 @@ export const authService = {
   },
 
   /**
-   * Update user nickname (during onboarding)
+   * Update user name (during onboarding)
    */
-  async updateNickname(nickname: string): Promise<User> {
+  async updateName(name: string): Promise<User> {
     try {
       const response = await api.put<ApiResponse<User>>('/users/me', {
-        nickname,
+        name,
       });
       return response.data.data;
     } catch (error) {

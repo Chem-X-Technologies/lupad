@@ -15,7 +15,7 @@ interface AuthState {
   initialize: () => Promise<void>;
   requestOtp: (phone: string) => Promise<void>;
   verifyOtp: (otp: string) => Promise<void>;
-  updateNickname: (nickname: string) => Promise<void>;
+  updateName: (name: string) => Promise<void>;
   logout: () => Promise<void>;
   clearPendingPhone: () => void;
 }
@@ -81,11 +81,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  // Update user nickname
-  updateNickname: async (nickname: string) => {
+  // Update user name
+  updateName: async (name: string) => {
     set({ isLoading: true });
     try {
-      const user = await authService.updateNickname(nickname);
+      const user = await authService.updateName(name);
       set({ user });
     } finally {
       set({ isLoading: false });

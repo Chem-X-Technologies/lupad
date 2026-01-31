@@ -1,8 +1,8 @@
 # Lupad - Development Progress
 
-**Last Updated:** January 30, 2026
+**Last Updated:** January 31, 2026
 **Current Phase:** Phase 1 - MVP Development (Week 3-4)
-**Currently Working On:** Customer App Onboarding Complete, Next: Maps & Booking
+**Currently Working On:** Customer App Auth Tested on Device, Next: Maps & Booking
 
 ---
 
@@ -52,7 +52,7 @@
 - [x] Onboarding slides with PagerView
 - [x] Phone registration screen (+63 format)
 - [x] OTP verification screen with countdown timer
-- [x] Nickname setup screen
+- [x] Name setup screen (onboarding)
 - [x] Auth store with Zustand (state management)
 - [x] Auth service with API integration
 - [x] Auth-aware routing (loading → auth check → redirect)
@@ -60,6 +60,11 @@
 - [x] EAS Build configured and project linked
 - [x] Design system documented from Figma designs
 - [x] Phase 1 MVP plan documented
+- [x] Simplified OTP endpoints for customer app (/auth/otp/request, /auth/otp/verify)
+- [x] Dynamic environment configuration (app.config.ts replacing app.json)
+- [x] Environment variables for API URL (EXPO_PUBLIC_API_URL)
+- [x] WSL/Windows networking setup for physical device testing
+- [x] Customer app auth flow tested on physical Android device
 
 ---
 
@@ -71,8 +76,8 @@ _Preparing for Week 5: Maps & Location features_
 
 ## ⏭️ Next Steps (Immediate)
 
-1. Build development APK with EAS Build
-2. Test Customer app auth flow on physical device
+1. ~~Build development APK with EAS Build~~ ✅
+2. ~~Test Customer app auth flow on physical device~~ ✅
 3. Implement Driver app onboarding (password-based auth)
 4. Set up Google Maps API integration
 5. Build home screen with map view
@@ -113,6 +118,14 @@ _No blockers currently_
 ---
 
 ## 🎯 Milestones Achieved
+
+**January 31, 2026:**
+
+- ✅ Simplified OTP auth endpoints added (unified flow for new/existing users)
+- ✅ Dynamic environment configuration with app.config.ts
+- ✅ WSL/Windows networking configured for device testing
+- ✅ Customer app auth flow tested on physical Android device
+- ✅ **Customer App Auth Flow Verified on Physical Device**
 
 **January 30, 2026:**
 

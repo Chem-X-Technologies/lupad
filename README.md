@@ -43,7 +43,7 @@ lupad/
 
 ### Frontend (Mobile Apps)
 
-- **Expo SDK 53** with Development Build (not Expo Go)
+- **Expo SDK 54** with Development Build (not Expo Go)
 - **Expo Router v4** for file-based navigation
 - **TypeScript** for type safety
 - **NativeWind v4** (Tailwind CSS) for styling
@@ -226,4 +226,4 @@ _Project is in early development phase_
 
 ---
 
-**Last Updated:** January 30, 2026
+**Last Updated:** January 31, 2026

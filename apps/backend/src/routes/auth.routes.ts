@@ -7,6 +7,7 @@ import {
   loginSchema,
   verifyOtpSchema,
   refreshTokenSchema,
+  otpRequestSchema,
 } from '../schemas/auth.schema.js';
 
 const router: Router = Router();
@@ -51,5 +52,23 @@ router.get('/me', authenticate, authController.me);
 
 // POST /api/auth/logout - Logout (requires authentication)
 router.post('/logout', authenticate, authController.logout);
+
+// ============================================
+// Simplified OTP flow for Customer App
+// ============================================
+
+// POST /api/auth/otp/request - Request OTP (for both new and existing users)
+router.post(
+  '/otp/request',
+  validate(otpRequestSchema, 'body'),
+  authController.requestOtpSimple
+);
+
+// POST /api/auth/otp/verify - Verify OTP and get tokens
+router.post(
+  '/otp/verify',
+  validate(verifyOtpSchema, 'body'),
+  authController.verifyOtpSimple
+);
 
 export default router;
