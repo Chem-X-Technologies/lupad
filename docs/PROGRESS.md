@@ -123,6 +123,42 @@ _No blockers currently_
 
 ---
 
+## 🗺️ Project Roadmap
+
+### Phase 1: MVP Development (Week 3-8) - Current
+**Goal:** End-to-end ride-hailing with booking, matching, tracking, ratings
+
+| Week | Focus | Key Deliverables |
+|------|-------|------------------|
+| 3-4 | Auth + Onboarding | ✅ Customer registration, OTP, profile setup |
+| 5-6 | Maps + Booking | Customer map view, destination search, fare estimate, booking |
+| 7-8 | Driver + Real-time | Driver app, ride acceptance, live tracking, completion, ratings |
+
+**Phase 1 Complete → Deploy to test environment, invite friends for testing**
+
+### Phase 2: Essential Features (Week 9-11)
+- Push notifications (Expo Notifications)
+- Digital payments (GCash, PayMaya via PayMongo/Xendit)
+- Basic admin dashboard (web)
+
+### Phase 3: Polish & Testing (Week 12-13)
+- End-to-end testing, load testing
+- GPS accuracy testing in Calbayog areas
+- UI/UX polish, performance optimization
+
+### Phase 4: Pre-Launch (Week 14-15)
+- Driver recruitment and training
+- App Store / Play Store submission
+- Closed beta (10-20 users, 5-10 drivers)
+
+### Phase 5: Launch (Week 16+)
+- Soft launch (1-2 barangays, 50 customers, 10 drivers)
+- Gradual expansion across Calbayog City
+
+**Total Timeline:** ~4.5 months to full city launch
+
+---
+
 ## 🎯 Milestones Achieved
 
 **February 5, 2026:**

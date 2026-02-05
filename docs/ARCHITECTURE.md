@@ -571,6 +571,34 @@ _To be defined during setup_
 
 ---
 
+## 📋 Key Technical Decisions
+
+### Prisma 6 (Not Prisma 7)
+
+**Why:** Prisma 7 requires full ESM migration and has dependency conflicts. Prisma 6 offers excellent CommonJS support, works seamlessly with Express ecosystem, and has all needed features.
+
+### Expo Development Builds (Not Expo Go)
+
+**Why:** More flexibility than Expo Go, access to any native library (react-native-maps, etc.), still simpler than React Native CLI, EAS Build for easy distribution.
+
+### Feature-First Development Approach
+
+**Why:** Build features end-to-end (backend → frontend → integration) rather than infrastructure-first. Faster feedback loops, better context retention, reduces over-engineering.
+
+### Mobile-Only Shared UI Components
+
+**Why:** Lupad is strictly a mobile app. Removed web-specific code (hover states, focus-visible, responsive breakpoints) from shared-ui components for cleaner, smaller bundles.
+
+### Simplified OTP Flow for Customers
+
+**Why:** Added unified `/auth/otp/request` and `/auth/otp/verify` endpoints. Frontend doesn't need to know if user exists - backend handles both new registration and login. Better UX, simpler code.
+
+### NativeWind over Other Styling Solutions
+
+**Why:** Familiar Tailwind syntax, rapid prototyping, easy theming with custom colors. Alternative considered: StyleSheet (verbose), Styled Components (runtime overhead), Tamagui (complex setup).
+
+---
+
 ## 📝 Future Architecture Considerations
 
 ### Potential Enhancements (Post-Phase 1)

@@ -1,229 +1,116 @@
-# Lupad 🚀
+# Lupad
 
-**Lupad** (meaning "Fly" in local language) is a ride-hailing application for Calbayog City, Samar, Philippines. Similar to Uber and Grab, Lupad connects customers with drivers for convenient and affordable transportation.
+**Lupad** (meaning "Fly" in local language) is a ride-hailing app for Calbayog City, Samar, Philippines.
 
----
-
-## 📱 Project Overview
-
-- **Type:** Ride-hailing mobile application
-- **Target Market:** Calbayog City, Samar, Philippines
-- **Development Status:** Phase 1 MVP Development (Week 3-4 Complete)
-- **Architecture:** Monorepo with separate customer and driver apps
-- **Tech Stack:** Expo (React Native), Node.js, PostgreSQL, Redis
+**Status:** Phase 1 MVP Development (Week 3-4 Complete)
 
 ---
 
-## 🏗️ Project Structure
-
-```
-lupad/
-├── apps/
-│   ├── customer/          # Customer-facing mobile app (Expo)
-│   ├── driver/            # Driver-facing mobile app (Expo)
-│   └── backend/           # Backend API server (Node.js + Express)
-├── packages/
-│   ├── shared-types/      # Shared TypeScript types and interfaces
-│   ├── shared-ui/         # Shared React Native components
-│   ├── shared-utils/      # Common utility functions
-│   └── shared-config/     # Shared configuration (ESLint, TypeScript, etc.)
-├── docs/                  # All project documentation
-│   ├── ROADMAP.md        # Detailed project roadmap and timeline
-│   ├── PROGRESS.md       # Current development progress tracker
-│   ├── ARCHITECTURE.md   # Technical architecture and design decisions
-│   ├── DECISIONS.md      # Log of important project decisions
-│   ├── COMPONENTS.md     # Shared UI components documentation
-│   └── AI_INSTRUCTIONS.md # Guide for working with AI assistants
-├── README.md             # This file
-└── package.json          # Root package.json for monorepo
-```
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend (Mobile Apps)
-
-- **Expo SDK 54** with Development Build (not Expo Go)
-- **Expo Router v4** for file-based navigation
-- **TypeScript** for type safety
-- **NativeWind v4** (Tailwind CSS) for styling
-- **Zustand** for state management
-- **TanStack Query v5** for server state management
-- **react-native-maps** for map display
-- **Expo Location** for GPS tracking
-- **Socket.io-client** for real-time updates
-
-### Backend
-
-- **Node.js** with **Express** (or Fastify)
-- **TypeScript**
-- **Prisma ORM** for database management
-- **Socket.io** for real-time communication
-- **JWT** for authentication
-- **Google Maps API** for geocoding and routing
-
-### Database
-
-- **PostgreSQL** (primary database)
-- **Redis** (caching and real-time data)
-
-### Development Tools
-
-- **Turborepo** for monorepo management
-- **ESLint** for code linting
-- **Prettier** for code formatting
-- **Git** for version control
-
----
-
-## 🚀 Getting Started
+## Quick Start
 
 ### Prerequisites
 
-- **Node.js** v22 LTS
-- **pnpm** v10+ (package manager)
-- **PostgreSQL** v14+ (local instance)
-- **Redis** v6+ (local instance)
-- **Expo CLI** and EAS CLI
-- **Android Studio** (for Android development) or **Xcode** (for iOS development)
-- **Expo account** (for EAS builds)
+- Node.js v22 LTS
+- pnpm v10+
+- PostgreSQL v14+
+- Redis v6+
+- Expo CLI and EAS CLI
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone <repo-url>
 cd lupad
-
-# Install dependencies
 pnpm install
 
-# Setup environment variables
+# Setup environment
 cp apps/backend/.env.example apps/backend/.env
 # Edit .env with your database credentials
 ```
 
-### Running the Project Locally
+### Running Locally
 
 ```bash
-# 1. Start PostgreSQL and Redis services
+# 1. Start PostgreSQL and Redis
 
-# 2. Start the backend API
-cd apps/backend
-pnpm dev
+# 2. Start backend
+cd apps/backend && pnpm dev
 
-# 3. In a new terminal, start the customer app
-cd apps/customer
-pnpm start
-
-# 4. Scan QR code with Expo Go or use development build
+# 3. Start customer app (new terminal)
+cd apps/customer && pnpm start
 ```
-
-For detailed setup instructions, see **[SETUP.md](SETUP.md)**
 
 ---
 
-## 📖 Documentation
+## Project Structure
 
-All project documentation is in the [`docs/`](docs/) folder:
-
-- **[ROADMAP.md](docs/ROADMAP.md)** - Complete project roadmap with timeline and milestones
-- **[PROGRESS.md](docs/PROGRESS.md)** - Current development progress and status
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical architecture and system design
-- **[DECISIONS.md](docs/DECISIONS.md)** - Log of important decisions made during development
-- **[AI_INSTRUCTIONS.md](docs/AI_INSTRUCTIONS.md)** - Guide for working with AI assistants
+```
+lupad/
+├── apps/
+│   ├── customer/          # Customer mobile app (Expo)
+│   ├── driver/            # Driver mobile app (Expo)
+│   └── backend/           # API server (Node.js + Express)
+├── packages/
+│   ├── shared-types/      # Shared TypeScript types
+│   ├── shared-ui/         # Shared React Native components
+│   ├── shared-utils/      # Common utilities + API client
+│   └── shared-config/     # Shared ESLint, TypeScript configs
+└── docs/                  # Documentation
+```
 
 ---
 
-## 🤖 Working with AI Assistants
+## Documentation
 
-### Starting a Fresh Conversation
+| File | Purpose |
+|------|---------|
+| [docs/PROGRESS.md](docs/PROGRESS.md) | Current status, roadmap, what's next |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Technical design, API, key decisions |
+| [docs/DESIGN.md](docs/DESIGN.md) | UI design system + components |
 
-When starting a new conversation with an AI assistant (after context has been cleared), use this prompt:
+---
+
+## For AI Assistants
+
+When starting a new conversation, copy and paste this prompt:
 
 ```
-Hi! I'm working on the Lupad project. Please read the following files to understand the current state:
+Hi! I'm working on the Lupad project, a ride-hailing app for Calbayog City, Philippines.
 
+Please read these files to understand the project:
 1. README.md - Project overview
-2. docs/PROGRESS.md - Current development status
-3. docs/ROADMAP.md - Project timeline
-4. docs/ARCHITECTURE.md - Technical decisions
-5. docs/DECISIONS.md - Decision log
+2. docs/PROGRESS.md - Current status and roadmap
+3. docs/ARCHITECTURE.md - Technical design and decisions
+4. docs/DESIGN.md - UI design system (if working on UI)
 
-After reviewing these files, help me with: [your specific task]
-```
+After reviewing, please:
+- Confirm you understand the current phase
+- Note: Follow "Feature-First Development" - build features end-to-end (backend + frontend together)
 
-**Tip:** See [docs/AI_INSTRUCTIONS.md](docs/AI_INSTRUCTIONS.md) for detailed guidance on working with AI assistants.
-
-### Before Ending a Session
-
-Ask the AI to help you update:
-
-1. **docs/PROGRESS.md** - Mark completed items, update current status
-2. Add any new decisions to **docs/DECISIONS.md**
-3. Document any new setup steps in **README.md**
-
----
-
-## 📋 Development Workflow
-
-### Branching Strategy
-
-_To be defined during setup_
-
-### Commit Message Convention
-
-Use conventional commits:
-
-- `feat(scope): add new feature`
-- `fix(scope): fix bug`
-- `docs: update documentation`
-- `chore: maintenance tasks`
-- `refactor: code refactoring`
-- `test: add or update tests`
-
-Examples:
-
-```
-feat(customer-app): add ride booking screen
-fix(backend): correct fare calculation logic
-docs: update local setup instructions
-chore(monorepo): configure Turborepo caching
+Then help me with: [describe your task]
 ```
 
 ---
 
-## 🎯 Phase 1 Features (MVP)
+## Tech Stack
 
-1. User registration/login (customers & drivers)
-2. Basic ride booking flow
-3. Simple driver matching (nearest available)
-4. Real-time location tracking
-5. Basic fare calculation (distance-based)
-6. Cash payment only (digital payments in Phase 2)
-7. Rating system
+- **Mobile:** Expo SDK 54, Expo Router v4, NativeWind, Zustand, TanStack Query
+- **Backend:** Node.js, Express, Prisma, Socket.io
+- **Database:** PostgreSQL + Redis
+- **Tools:** Turborepo, TypeScript, EAS Build
 
----
-
-## 📞 Development Notes
-
-- **Local Development:** Phase 1 will be developed entirely on local infrastructure
-- **Test Environment:** Will be set up after Phase 1 completion
-- **Testing:** Friends will be invited to test after Phase 1
-- **Target City:** Calbayog City, Samar, Philippines only
+See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for details.
 
 ---
 
-## 📄 License
+## Commit Convention
 
-_To be determined_
-
----
-
-## 👥 Contributors
-
-_Project is in early development phase_
+```
+feat(scope): add new feature
+fix(scope): fix bug
+docs: update documentation
+chore: maintenance tasks
+```
 
 ---
 
