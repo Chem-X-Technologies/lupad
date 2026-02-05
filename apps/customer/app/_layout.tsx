@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { PortalHost } from '@rn-primitives/portal';
 import { useAuthStore } from '../src/stores/authStore';
 
 export default function RootLayout() {
@@ -27,6 +28,7 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)" />
           <Stack.Screen name="(app)" />
         </Stack>
+        <PortalHost />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

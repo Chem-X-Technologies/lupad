@@ -1,14 +1,23 @@
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../src/stores/authStore';
+import { Button, Text, Header, Input } from '@lupad/shared-ui';
 
 export default function NameScreen() {
   const router = useRouter();
   const [name, setName] = useState('');
   const { updateName, isLoading } = useAuthStore();
+  const inputRef = useRef<TextInput>(null);
 
   const handleBack = () => {
     router.back();
@@ -24,7 +33,9 @@ export default function NameScreen() {
     } catch (error) {
       Alert.alert(
         'Error',
-        error instanceof Error ? error.message : 'Failed to save name. Please try again.'
+        error instanceof Error
+          ? error.message
+          : 'Failed to save name. Please try again.'
       );
     }
   };
@@ -37,50 +48,66 @@ export default function NameScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
-        {/* Header */}
-        <View className="bg-primary pt-12 pb-8 px-6 rounded-b-[32px]">
-          <Pressable onPress={handleBack} className="mb-4">
-            <Ionicons name="chevron-back" size={24} color="white" />
-          </Pressable>
-          <Text className="text-3xl font-bold text-white mb-2">Get Started</Text>
-          <Text className="text-base text-white/80">What should we call you?</Text>
-        </View>
+        <Header
+          title="Get Started"
+          subtitle="What should we call you?"
+          onBack={handleBack}
+        />
 
         {/* Content */}
-        <View className="flex-1 px-6 pt-12">
-          {/* Name Input */}
-          <TextInput
-            className="text-2xl text-gray-dark text-center border-b border-gray-light pb-2"
-            placeholder="Your name"
-            placeholderTextColor="#9E9E9E"
-            value={name}
-            onChangeText={setName}
-            autoFocus
-            maxLength={30}
-            editable={!isLoading}
-          />
-        </View>
+        <Pressable
+          className="flex-1 px-6 pt-12"
+          onPress={() => inputRef.current?.focus()}
+        >
+          {/* Name Input - Centered container with auto-width input */}
+          <View className="items-center relative">
+            {!name && (
+              <Text
+                className="text-gray-400 absolute font-normal pt-3"
+                variant="h3"
+              >
+                Your name
+              </Text>
+            )}
+            <Input
+              ref={inputRef}
+              className="border-0 rounded-none text-2xl pb-2 w-auto dark:bg-transparent"
+              keyboardType="name-phone-pad"
+              value={name}
+              onChangeText={setName}
+              autoFocus
+              maxLength={30}
+              editable={!isLoading}
+            />
+            {/* Full-width bottom border */}
+            <View className="w-full h-[1px] bg-input" />
+          </View>
+        </Pressable>
 
         {/* Footer */}
         <View className="px-6 pb-8">
-          <Text className="text-sm text-gray-medium text-center mb-4">
+          <Text
+            className="text-center mb-4 text-muted-foreground"
+            variant="muted"
+          >
             By clicking next, you agree to our{' '}
-            <Text className="text-primary font-semibold">Terms and Conditions</Text>
+            <Text className="text-primary font-semibold" variant="small">
+              Terms and Conditions
+            </Text>
           </Text>
 
-          <Pressable
+          <Button
+            variant="secondary"
             onPress={handleNext}
             disabled={!isValidName || isLoading}
-            className={`w-full h-14 rounded-xl items-center justify-center ${
-              isValidName && !isLoading ? 'bg-secondary active:opacity-80' : 'bg-secondary/50'
-            }`}
+            className="h-14 rounded-xl"
           >
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text className="text-white text-base font-semibold">Next</Text>
+              <Text>Next</Text>
             )}
-          </Pressable>
+          </Button>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

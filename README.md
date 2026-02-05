@@ -32,6 +32,7 @@ lupad/
 │   ├── PROGRESS.md       # Current development progress tracker
 │   ├── ARCHITECTURE.md   # Technical architecture and design decisions
 │   ├── DECISIONS.md      # Log of important project decisions
+│   ├── COMPONENTS.md     # Shared UI components documentation
 │   └── AI_INSTRUCTIONS.md # Guide for working with AI assistants
 ├── README.md             # This file
 └── package.json          # Root package.json for monorepo
@@ -226,4 +227,4 @@ _Project is in early development phase_
 
 ---
 
-**Last Updated:** January 31, 2026
+**Last Updated:** February 5, 2026

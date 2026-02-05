@@ -6,6 +6,15 @@ module.exports = function (api) {
       'nativewind/babel',
     ],
     plugins: [
+      [
+        'module-resolver',
+        {
+          alias: {
+            '~': './src',
+            '@lupad/shared-ui': '../../packages/shared-ui/src',
+          },
+        },
+      ],
       'react-native-reanimated/plugin',
     ],
   };

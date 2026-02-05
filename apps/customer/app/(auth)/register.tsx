@@ -1,18 +1,22 @@
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../src/stores/authStore';
+import { Button, Text, Header } from '@lupad/shared-ui';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState('');
   const { requestOtp, isLoading } = useAuthStore();
-
-  const handleBack = () => {
-    router.back();
-  };
 
   const handleSendOtp = async () => {
     if (phoneNumber.length < 10) return;
@@ -27,7 +31,9 @@ export default function RegisterScreen() {
     } catch (error) {
       Alert.alert(
         'Error',
-        error instanceof Error ? error.message : 'Failed to send OTP. Please try again.'
+        error instanceof Error
+          ? error.message
+          : 'Failed to send OTP. Please try again.'
       );
     }
   };
@@ -40,14 +46,11 @@ export default function RegisterScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
-        {/* Header */}
-        <View className="bg-primary pt-12 pb-8 px-6 rounded-b-[32px]">
-          <Pressable onPress={handleBack} className="mb-4">
-            <Ionicons name="chevron-back" size={24} color="white" />
-          </Pressable>
-          <Text className="text-3xl font-bold text-white mb-2">Sign Up</Text>
-          <Text className="text-base text-white/80">Enter your mobile number</Text>
-        </View>
+        <Header
+          title="Sign Up"
+          subtitle="Enter your mobile number"
+          onBack={() => router.back()}
+        />
 
         {/* Content */}
         <View className="flex-1 px-6 pt-8">
@@ -55,7 +58,12 @@ export default function RegisterScreen() {
           <View className="flex-row items-center border-b border-gray-light pb-2">
             <View className="flex-row items-center pr-4 border-r border-gray-light">
               <Text className="text-base text-gray-dark">+63</Text>
-              <Ionicons name="chevron-down" size={16} color="#9E9E9E" className="ml-1" />
+              <Ionicons
+                name="chevron-down"
+                size={16}
+                color="#9E9E9E"
+                className="ml-1"
+              />
             </View>
             <TextInput
               className="flex-1 ml-4 text-lg text-gray-dark"
@@ -72,19 +80,18 @@ export default function RegisterScreen() {
 
         {/* Button */}
         <View className="px-6 pb-8">
-          <Pressable
+          <Button
+            variant="secondary"
             onPress={handleSendOtp}
             disabled={!isValidPhone || isLoading}
-            className={`w-full h-14 rounded-xl items-center justify-center ${
-              isValidPhone && !isLoading ? 'bg-secondary active:opacity-80' : 'bg-secondary/50'
-            }`}
+            className="h-14 rounded-xl"
           >
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text className="text-white text-base font-semibold">Send OTP</Text>
+              <Text>Send OTP</Text>
             )}
-          </Pressable>
+          </Button>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

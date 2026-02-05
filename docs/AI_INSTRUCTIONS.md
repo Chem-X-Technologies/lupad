@@ -13,10 +13,13 @@ Hi! I'm working on the Lupad project, a ride-hailing app for Calbayog City, Phil
 
 Please read and understand these files in order:
 1. README.md - Project overview and setup
-2. PROGRESS.md - Current development status
-3. ROADMAP.md - Project timeline and phases
-4. ARCHITECTURE.md - Technical architecture
-5. DECISIONS.md - Key decisions made
+2. docs/PROGRESS.md - Current development status
+3. docs/ROADMAP.md - Project timeline and phases
+4. docs/ARCHITECTURE.md - Technical architecture
+5. docs/DECISIONS.md - Key decisions made
+6. docs/PHASE1_MVP_PLAN.md
+7. docs/DESIGN_SYSTEM.md - Design systems derived from customer app figma design screenshots in `docs/designs`
+8. docs/COMPONENTS.md - Shared UI components available for reuse
 
 After reviewing, please:
 - Summarize what phase we're currently in
@@ -351,12 +354,14 @@ Always read these before asking AI questions!
 ### Example: Building the Auth Feature
 
 **Instead of:**
+
 1. Install all 15 dependencies for the entire app
 2. Set up all navigation screens (empty)
 3. Create all API endpoints (unused)
 4. Then build features one by one
 
 **Do this:**
+
 1. Identify what the Auth feature needs (expo-router, zustand, axios, expo-secure-store)
 2. Install only those dependencies
 3. Build splash screen → onboarding → registration → OTP → nickname (complete flow)
@@ -390,6 +395,7 @@ Please:
 ### Feature Checklist
 
 For each feature, ensure:
+
 - [ ] Only required dependencies are installed
 - [ ] Backend endpoints are created and tested
 - [ ] Frontend screens are created and connected
@@ -399,6 +405,6 @@ For each feature, ensure:
 
 ---
 
-**Last Updated:** January 30, 2026
+**Last Updated:** February 5, 2026
 
 **Tip:** Bookmark this file in your browser/editor for quick access! 🔖

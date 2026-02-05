@@ -4,6 +4,42 @@ This document records important technical and architectural decisions made durin
 
 ---
 
+## 2026-02-05: Mobile-Only Shared UI Components
+
+### Decision: Remove Web-Specific Code from Shared UI Components
+
+**Status:** ✅ Accepted
+**Context:** The shared-ui package was built using React Native Reusables which includes web-specific code (hover states, focus-visible, responsive breakpoints). Lupad is a mobile-only app.
+**Alternatives Considered:**
+
+- Keep web-specific code for potential future web app (adds bloat, unused)
+- Remove web code now, add back later if needed (cleaner, simpler)
+
+**Decision:** Remove all web-specific code from shared-ui components
+**Rationale:**
+
+- Lupad is strictly a mobile app (no web version planned)
+- Cleaner, more readable component code
+- Smaller bundle size
+- Easier to maintain and understand
+- Can always add web support later if needed
+
+**Changes Made:**
+
+- Button: Removed `Platform.select({ web: ... })`, removed `sm:` responsive prefixes
+- Text: Removed unused variants (h4, p, blockquote, code, lead), removed web styles
+- Input: Simplified to underline style matching Figma designs
+- Header: Already clean, no changes needed
+
+**Consequences:**
+
+- Components are now mobile-focused and simpler
+- TextClassContext pattern kept for Button/Text integration
+- CVA (class-variance-authority) kept for variant management
+- If web support needed later, will require adding back web styles
+
+---
+
 ## 2026-01-31: Simplified OTP Auth Flow for Customer App
 
 ### Decision: Add Unified OTP Endpoints That Handle Both New and Existing Users

@@ -1,8 +1,9 @@
-import { View, Text, Image, Pressable, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PagerView from 'react-native-pager-view';
+import { Button, Text } from '@lupad/shared-ui';
 
 const { width } = Dimensions.get('window');
 
@@ -48,10 +49,13 @@ export default function OnboardingScreen() {
           ref={pagerRef}
           style={{ flex: 1 }}
           initialPage={0}
-          onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
+          onPageSelected={e => setCurrentPage(e.nativeEvent.position)}
         >
-          {slides.map((slide) => (
-            <View key={slide.id} className="flex-1 items-center justify-center px-6">
+          {slides.map(slide => (
+            <View
+              key={slide.id}
+              className="flex-1 items-center justify-center px-6"
+            >
               {/* Illustration placeholder */}
               <View className="w-64 h-64 bg-gray-light rounded-full items-center justify-center mb-8">
                 <View className="w-24 h-24 bg-secondary rounded-full items-center justify-center">
@@ -87,23 +91,17 @@ export default function OnboardingScreen() {
 
       {/* Buttons */}
       <View className="px-6 pb-8">
-        <Pressable
+        <Button
+          variant="default"
           onPress={handleLogin}
-          className="w-full h-14 bg-primary rounded-xl items-center justify-center mb-4 active:opacity-80"
+          className="mb-4 bg-primary"
         >
-          <Text className="text-white text-base font-semibold uppercase tracking-wide">
-            Log In
-          </Text>
-        </Pressable>
+          <Text>Log In</Text>
+        </Button>
 
-        <Pressable
-          onPress={handleSignUp}
-          className="w-full h-14 bg-secondary rounded-xl items-center justify-center active:opacity-80"
-        >
-          <Text className="text-white text-base font-semibold uppercase tracking-wide">
-            Sign Up
-          </Text>
-        </Pressable>
+        <Button variant="secondary" onPress={handleSignUp}>
+          <Text>Sign Up</Text>
+        </Button>
       </View>
     </SafeAreaView>
   );

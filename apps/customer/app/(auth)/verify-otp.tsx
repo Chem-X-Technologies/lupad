@@ -1,10 +1,18 @@
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  TextInput,
+  Pressable,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState, useRef, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../src/stores/authStore';
 import { formatPhoneNumber } from '@lupad/shared-utils';
+import { Button, Text, Header } from '@lupad/shared-ui';
 
 export default function VerifyOtpScreen() {
   const router = useRouter();
@@ -106,16 +114,11 @@ export default function VerifyOtpScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
-        {/* Header */}
-        <View className="bg-primary pt-12 pb-8 px-6 rounded-b-[32px]">
-          <Pressable onPress={handleBack} className="mb-4">
-            <Ionicons name="chevron-back" size={24} color="white" />
-          </Pressable>
-          <Text className="text-3xl font-bold text-white mb-2">Verification</Text>
-          <Text className="text-base text-white/80">
-            Enter the OTP sent to {pendingPhone ? formatPhoneNumber(pendingPhone) : ''}
-          </Text>
-        </View>
+        <Header
+          title="Verification"
+          subtitle={`Enter the OTP sent to ${pendingPhone ? formatPhoneNumber(pendingPhone) : ''}`}
+          onBack={handleBack}
+        />
 
         {/* Content */}
         <View className="flex-1 px-6 pt-12">
@@ -154,19 +157,14 @@ export default function VerifyOtpScreen() {
 
         {/* Button */}
         <View className="px-6 pb-8">
-          <Pressable
+          <Button
+            variant="secondary"
             onPress={handleVerify}
             disabled={!isOtpComplete || isLoading}
-            className={`w-full h-14 rounded-xl items-center justify-center ${
-              isOtpComplete && !isLoading ? 'bg-secondary active:opacity-80' : 'bg-secondary/50'
-            }`}
+            className="h-14 rounded-xl"
           >
-            {isLoading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <Text className="text-white text-base font-semibold">Verify</Text>
-            )}
-          </Pressable>
+            {isLoading ? <ActivityIndicator color="white" /> : <Text>Verify</Text>}
+          </Button>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -1,7 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@lupad/shared-ui": ["../../packages/shared-ui/src/index.ts"]
+    }
   },
   "include": [
     "**/*.ts",
