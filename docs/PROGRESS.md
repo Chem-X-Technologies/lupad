@@ -1,8 +1,8 @@
 # Lupad - Development Progress
 
-**Last Updated:** February 5, 2026
-**Current Phase:** Phase 1 - MVP Development (Week 3-4)
-**Currently Working On:** Shared UI Components Complete, Next: Maps & Booking
+**Last Updated:** February 10, 2026
+**Current Phase:** Phase 1 - MVP Development (Week 5-6)
+**Currently Working On:** Driver App Onboarding Complete, Next: Maps & Booking
 
 ---
 
@@ -72,11 +72,29 @@
 - [x] Header component for auth/form screens
 - [x] Components documentation created (docs/COMPONENTS.md)
 
+### Phase 1 - Week 5: Driver App Onboarding
+- [x] Driver app project foundation (Expo Router, NativeWind, dependencies)
+- [x] Dynamic environment configuration (app.config.ts)
+- [x] Driver API client with token management (expo-secure-store)
+- [x] Driver auth service (register, login, verify-otp, getProfile)
+- [x] Driver auth store with multi-step registration state (Zustand)
+- [x] Auth-aware routing (loading → auth check → redirect)
+- [x] Onboarding slides (driver-themed)
+- [x] Login screen (phone + password)
+- [x] Registration Step 1: Personal Info (phone, name, email)
+- [x] Registration Step 2: Vehicle Info (vehicle type, license, plate)
+- [x] Registration Step 3: Password (with show/hide toggle)
+- [x] OTP verification screen (after registration)
+- [x] Home screen placeholder with logout
+- [x] PhoneInput shared component (packages/shared-ui)
+- [x] OtpInput shared component (packages/shared-ui)
+- [x] Customer app updated to use PhoneInput and OtpInput components
+
 ---
 
 ## 🚧 In Progress
 
-_Preparing for Week 5: Maps & Location features_
+_Preparing for Week 5-6: Maps & Location features_
 
 ---
 
@@ -84,7 +102,7 @@ _Preparing for Week 5: Maps & Location features_
 
 1. ~~Build development APK with EAS Build~~ ✅
 2. ~~Test Customer app auth flow on physical device~~ ✅
-3. Implement Driver app onboarding (password-based auth)
+3. ~~Implement Driver app onboarding (password-based auth)~~ ✅
 4. Set up Google Maps API integration
 5. Build home screen with map view
 6. Implement destination picker
@@ -160,6 +178,15 @@ _No blockers currently_
 ---
 
 ## 🎯 Milestones Achieved
+
+**February 10, 2026:**
+
+- ✅ Driver app fully set up (Expo Router, NativeWind, Zustand, shared packages)
+- ✅ Driver onboarding: multi-step registration (personal → vehicle → password → OTP)
+- ✅ Driver login with phone + password
+- ✅ PhoneInput and OtpInput reusable components added to @lupad/shared-ui
+- ✅ Customer app refactored to use new shared PhoneInput and OtpInput components
+- ✅ **Driver App Onboarding COMPLETE**
 
 **February 5, 2026:**
 

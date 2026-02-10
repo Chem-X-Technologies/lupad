@@ -63,12 +63,25 @@ eas build --profile development --platform android
 ```bash
 cd apps/driver
 
-# Start development server
-pnpm dev
+# Login to Expo (first time only)
+npx expo login
+eas login
 
-# To build development client
-npx eas build --profile development --platform android
+# Initialize EAS project (first time only)
+eas init
+
+# Start development server (for Expo Go testing)
+pnpm start
+
+# To build development client (for device testing)
+eas build --profile development --platform android
 ```
+
+**Note:** The driver app uses:
+- Expo Router v4 for file-based navigation
+- NativeWind (Tailwind CSS) for styling
+- Zustand for state management (multi-step registration)
+- expo-secure-store for JWT token storage
 
 ## Monorepo Commands
 
@@ -231,7 +244,7 @@ If you're developing on WSL (Windows Subsystem for Linux) and want to test on a 
 
 ### 1. Configure Environment Variables
 
-Create `apps/customer/.env.development`:
+Create `.env.development` in **both** mobile apps (`apps/customer/` and `apps/driver/`):
 ```env
 # Get your Windows IP: powershell.exe -Command "Get-NetIPAddress -AddressFamily IPv4 | Where-Object InterfaceAlias -eq 'Wi-Fi'"
 EXPO_PUBLIC_API_URL=http://YOUR_WINDOWS_IP:3000/api

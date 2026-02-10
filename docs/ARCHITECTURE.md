@@ -1,7 +1,7 @@
 # Lupad - Technical Architecture
 
-**Last Updated:** February 5, 2026
-**Status:** Phase 1 MVP Development (Week 3-4 Complete)
+**Last Updated:** February 10, 2026
+**Status:** Phase 1 MVP Development (Week 5 Driver App Onboarding Complete)
 
 ---
 
@@ -107,6 +107,36 @@ apps/customer/
 │   │   └── auth.ts           # Auth API functions (OTP-based)
 │   └── stores/
 │       └── authStore.ts      # Zustand auth state
+├── app.config.ts             # Dynamic Expo config (env vars)
+├── tailwind.config.js        # Custom theme colors
+├── global.css                # Tailwind directives
+└── eas.json                  # EAS Build configuration
+```
+
+### Driver App Structure
+
+```
+apps/driver/
+├── app/                      # Expo Router file-based routes
+│   ├── _layout.tsx           # Root layout (providers, auth init)
+│   ├── index.tsx             # Entry point (auth-aware redirect)
+│   ├── (auth)/               # Auth flow (unauthenticated)
+│   │   ├── _layout.tsx       # Auth stack layout
+│   │   ├── onboarding.tsx    # Welcome slides (driver-themed)
+│   │   ├── login.tsx         # Phone + password login
+│   │   ├── register-personal.tsx  # Step 1/3: Personal info
+│   │   ├── register-vehicle.tsx   # Step 2/3: Vehicle info
+│   │   ├── register-password.tsx  # Step 3/3: Password + submit
+│   │   └── verify-otp.tsx    # OTP verification (after registration)
+│   └── (app)/                # Main app (authenticated)
+│       ├── _layout.tsx       # App stack layout
+│       └── index.tsx         # Home screen (placeholder)
+├── src/
+│   ├── services/
+│   │   ├── api.ts            # API client (uses shared-utils)
+│   │   └── auth.ts           # Auth API functions (password-based)
+│   └── stores/
+│       └── authStore.ts      # Zustand auth state (multi-step registration)
 ├── app.config.ts             # Dynamic Expo config (env vars)
 ├── tailwind.config.js        # Custom theme colors
 ├── global.css                # Tailwind directives

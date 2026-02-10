@@ -2,7 +2,7 @@
 
 **Lupad** (meaning "Fly" in local language) is a ride-hailing app for Calbayog City, Samar, Philippines.
 
-**Status:** Phase 1 MVP Development (Week 3-4 Complete)
+**Status:** Phase 1 MVP Development (Week 5 — Driver App Onboarding Complete)
 
 ---
 
@@ -38,7 +38,12 @@ cd apps/backend && pnpm dev
 
 # 3. Start customer app (new terminal)
 cd apps/customer && pnpm start
+
+# 4. Start driver app (new terminal)
+cd apps/driver && pnpm start
 ```
+
+> **WSL/Windows users:** Both mobile apps need a `.env.development` file with your Windows IP for physical device testing. See [SETUP.md](SETUP.md#testing-on-physical-device-wslwindows).
 
 ---
 
@@ -114,4 +119,4 @@ chore: maintenance tasks
 
 ---
 
-**Last Updated:** February 5, 2026
+**Last Updated:** February 10, 2026

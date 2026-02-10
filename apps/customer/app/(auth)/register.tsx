@@ -1,6 +1,5 @@
 import {
   View,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   Alert,
@@ -9,9 +8,8 @@ import {
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '../../src/stores/authStore';
-import { Button, Text, Header } from '@lupad/shared-ui';
+import { Button, Text, Header, PhoneInput } from '@lupad/shared-ui';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -55,27 +53,11 @@ export default function RegisterScreen() {
         {/* Content */}
         <View className="flex-1 px-6 pt-8">
           {/* Phone Input */}
-          <View className="flex-row items-center border-b border-gray-light pb-2">
-            <View className="flex-row items-center pr-4 border-r border-gray-light">
-              <Text className="text-base text-gray-dark">+63</Text>
-              <Ionicons
-                name="chevron-down"
-                size={16}
-                color="#9E9E9E"
-                className="ml-1"
-              />
-            </View>
-            <TextInput
-              className="flex-1 ml-4 text-lg text-gray-dark"
-              placeholder="Mobile Number"
-              placeholderTextColor="#9E9E9E"
-              keyboardType="phone-pad"
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              maxLength={10}
-              editable={!isLoading}
-            />
-          </View>
+          <PhoneInput
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            editable={!isLoading}
+          />
         </View>
 
         {/* Button */}

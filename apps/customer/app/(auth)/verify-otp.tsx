@@ -1,6 +1,5 @@
 import {
   View,
-  TextInput,
   Pressable,
   KeyboardAvoidingView,
   Platform,
@@ -8,18 +7,18 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '../../src/stores/authStore';
 import { formatPhoneNumber } from '@lupad/shared-utils';
-import { Button, Text, Header } from '@lupad/shared-ui';
+import { Button, Text, Header, OtpInput } from '@lupad/shared-ui';
 
 export default function VerifyOtpScreen() {
   const router = useRouter();
-  const { pendingPhone, verifyOtp, requestOtp, isLoading, user } = useAuthStore();
+  const { pendingPhone, verifyOtp, requestOtp, isLoading, user } =
+    useAuthStore();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(180); // 3 minutes
-  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   // Redirect if no pending phone
   useEffect(() => {
@@ -41,31 +40,6 @@ export default function VerifyOtpScreen() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
-  const handleOtpChange = (value: string, index: number) => {
-    if (value.length > 1) {
-      value = value[value.length - 1];
-    }
-
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    // Move to next input
-    if (value && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number) => {
-    if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
   const handleVerify = async () => {
     const otpString = otp.join('');
     if (otpString.length !== 6) return;
@@ -83,11 +57,12 @@ export default function VerifyOtpScreen() {
     } catch (error) {
       Alert.alert(
         'Verification Failed',
-        error instanceof Error ? error.message : 'Invalid OTP. Please try again.'
+        error instanceof Error
+          ? error.message
+          : 'Invalid OTP. Please try again.'
       );
       // Clear OTP on error
       setOtp(['', '', '', '', '', '']);
-      inputRefs.current[0]?.focus();
     }
   };
 
@@ -117,39 +92,33 @@ export default function VerifyOtpScreen() {
         <Header
           title="Verification"
           subtitle={`Enter the OTP sent to ${pendingPhone ? formatPhoneNumber(pendingPhone) : ''}`}
-          onBack={handleBack}
+          onBack={() => router.back()}
         />
 
         {/* Content */}
         <View className="flex-1 px-6 pt-12">
-          {/* OTP Inputs */}
-          <View className="flex-row justify-between mb-8">
-            {otp.map((digit, index) => (
-              <TextInput
-                key={index}
-                ref={(ref) => { inputRefs.current[index] = ref; }}
-                className="w-12 h-12 border-b-2 border-gray-light text-center text-2xl text-gray-dark"
-                keyboardType="number-pad"
-                maxLength={1}
-                value={digit}
-                onChangeText={(value) => handleOtpChange(value, index)}
-                onKeyPress={(e) => handleKeyPress(e, index)}
-                selectTextOnFocus
-                editable={!isLoading}
-              />
-            ))}
-          </View>
+          {/* OTP Input */}
+          <OtpInput
+            value={otp}
+            onChange={setOtp}
+            disabled={isLoading}
+            className="mb-8"
+          />
 
           {/* Timer */}
           <View className="items-center">
             {timer > 0 ? (
               <Text className="text-gray-medium text-base">
                 Request a new code in{' '}
-                <Text className="text-gray-dark font-semibold">{formatTime(timer)}</Text>
+                <Text className="text-gray-dark font-semibold">
+                  {formatTime(timer)}
+                </Text>
               </Text>
             ) : (
               <Pressable onPress={handleResendOtp} disabled={isLoading}>
-                <Text className="text-primary text-base font-semibold">Resend OTP</Text>
+                <Text className="text-primary text-base font-semibold">
+                  Resend OTP
+                </Text>
               </Pressable>
             )}
           </View>
@@ -163,7 +132,11 @@ export default function VerifyOtpScreen() {
             disabled={!isOtpComplete || isLoading}
             className="h-14 rounded-xl"
           >
-            {isLoading ? <ActivityIndicator color="white" /> : <Text>Verify</Text>}
+            {isLoading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text>Verify</Text>
+            )}
           </Button>
         </View>
       </KeyboardAvoidingView>

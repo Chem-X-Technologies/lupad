@@ -2,7 +2,7 @@
 
 **Package:** `@lupad/shared-ui`
 **Location:** `packages/shared-ui/src/components/ui/`
-**Last Updated:** February 5, 2026
+**Last Updated:** February 10, 2026
 
 ---
 
@@ -180,12 +180,63 @@ import { Header } from '@lupad/shared-ui';
 
 ---
 
+### PhoneInput
+
+**File:** `packages/shared-ui/src/components/ui/phone-input.tsx`
+
+```tsx
+import { PhoneInput } from '@lupad/shared-ui';
+
+<PhoneInput
+  value={phoneNumber}
+  onChangeText={setPhoneNumber}
+  editable={!isLoading}
+/>
+```
+
+**Props:** All React Native `TextInputProps` (except `keyboardType`, `maxLength`) plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `countryCode` | `string` | `'+63'` | Country code prefix |
+| `className` | `string` | - | Additional Tailwind classes |
+
+**Design specs:** Underline style, +63 prefix with chevron, 10-digit max
+
+---
+
+### OtpInput
+
+**File:** `packages/shared-ui/src/components/ui/otp-input.tsx`
+
+```tsx
+import { OtpInput } from '@lupad/shared-ui';
+
+<OtpInput
+  value={otp}
+  onChange={setOtp}
+  disabled={isLoading}
+/>
+```
+
+**Props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `length` | `number` | `6` | Number of OTP digits |
+| `value` | `string[]` | required | Array of digit strings |
+| `onChange` | `(otp: string[]) => void` | required | Change handler |
+| `disabled` | `boolean` | `false` | Disable all inputs |
+| `className` | `string` | - | Additional Tailwind classes |
+
+**Design specs:** Individual boxes, auto-advance on input, backspace moves to previous
+
+---
+
 ## Components To Build
 
 | Component | Description | Priority |
 |-----------|-------------|----------|
-| **OtpInput** | 6-digit OTP with individual boxes | High |
-| **PhoneInput** | Country code + number combo | High |
 | **BottomSheet** | Sliding panel from bottom | High |
 | **VehicleSelectItem** | Selectable vehicle row | Medium |
 | **DriverCard** | Avatar, name, rating, actions | Medium |
@@ -197,7 +248,7 @@ import { Header } from '@lupad/shared-ui';
 ## Usage
 
 ```tsx
-import { Button, Text, Input, Header, cn } from '@lupad/shared-ui';
+import { Button, Text, Input, PhoneInput, OtpInput, Header, cn } from '@lupad/shared-ui';
 ```
 
 ### Tailwind Config
