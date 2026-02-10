@@ -7,6 +7,8 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "prebuild:dev": "node scripts/bump-version.js",
+    "build:dev": "eas build --profile development --platform android",
     "lint": "expo lint",
     "clean": "rm -rf .expo node_modules"
   },

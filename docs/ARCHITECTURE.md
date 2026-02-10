@@ -552,6 +552,29 @@ apps/backend/
 
 _To be defined during setup_
 
+### Creating Development Builds (EAS)
+
+Before creating a new development build, **always increment the app version**:
+
+1. **Update version in both files** (keep them in sync):
+   - `apps/customer/app.config.ts` → `version: 'X.Y.Z'`
+   - `apps/customer/package.json` → `"version": "X.Y.Z"`
+
+2. **Version bump guidelines**:
+   - **Patch (0.1.X)**: Bug fixes, minor tweaks
+   - **Minor (0.X.0)**: New features, dependency upgrades (e.g., styling library migration)
+   - **Major (X.0.0)**: Breaking changes, major rewrites
+
+3. **Create the build**:
+   ```bash
+   cd apps/customer
+   eas build --profile development --platform android
+   ```
+
+4. **Install on device** after build completes:
+   - Download APK from EAS dashboard, or
+   - Scan QR code from terminal
+
 ---
 
 ## 🎯 Performance Targets
